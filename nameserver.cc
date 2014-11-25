@@ -16,20 +16,26 @@ NameServer::NameServer( Printer & printer, unsigned int numVendingMachines, unsi
   mVMIndex = 0;
   mStudentIndex = 0;
   mRegisterIndex = 0;
+
+  mPrinter.print( Printer::NameServer, Starting );
 }
 
 NameServer::~NameServer() {
+  mPrinter.print( Printer::NameServer, Finished );
   delete[] mStudents;
   delete[] mMachines;
 }
 
 void NameServer::VMregister( VendingMachine *vendingMachine ) {
+  mPrinter.print( Printer::NameServer,
+                  (char)Register,
+                  vendingMachine->getId() );
   mMachines[mVMIndex] = vendingMachine;
   mVMIndex += 1;
 }
 
 VendingMachine* NameServer::getMachine( unsigned int id ) {
-
+  
   if ( mStudents[id] == -1 ) {
     // Student has not been registered a VendingMachine yet
     mStudents[id] = mRegisterIndex;
@@ -39,6 +45,11 @@ VendingMachine* NameServer::getMachine( unsigned int id ) {
     // Student should get the next VendingMachine
     mStudents[id] = ( mStudents[id] + 1 ) % mNumVendingMachines;
   }
+
+  mPrinter.print( Printer::NameServer,
+                  (char)New,
+                  id,
+                  mMachines[mStudents[id]]->getId() );
 
   return mMachines[mStudents[id]];
 }

@@ -27,6 +27,12 @@ _Task WATCardOffice {
   public:
 
     _Task Courier {
+      enum State {
+        Starting      = 'S', 
+        StartTransfer = 't', 
+        EndTransfer   = 'T', 
+        Finished      = 'F'
+      };
 
       unsigned int mId;
       WATCardOffice & mOffice;
@@ -36,13 +42,6 @@ _Task WATCardOffice {
 
       public:
       Courier ( unsigned int id, WATCardOffice & office, Printer & printer );
-
-        enum State {
-          Starting      = 'S', 
-          StartTransfer = 't', 
-          EndTransfer   = 'T', 
-          Finished      = 'F'
-        };
     };                 // communicates with bank
 
     Printer & mPrinter;
@@ -55,6 +54,14 @@ _Task WATCardOffice {
 
     void main();
 
+    enum State {
+      Starting     = 'S', 
+      RequestWork  = 'W', 
+      CreateWork   = 'C', 
+      TransferWork = 'T', 
+      Finished     = 'F'
+    };
+
   public:
 
     _Event Lost {};                        // lost WATCard
@@ -63,14 +70,6 @@ _Task WATCardOffice {
     WATCard::FWATCard create( unsigned int sid, unsigned int amount );
     WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
     Job *requestWork();
-
-    enum State {
-      Starting     = 'S', 
-      RequestWork  = 'W', 
-      CreateWork   = 'C', 
-      TransferWork = 'T', 
-      Finished     = 'F'
-    };
 
 };
 
