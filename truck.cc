@@ -1,5 +1,8 @@
 #include "truck.h"
 #include "MPRNG.h"
+#include <iostream>
+
+using namespace std;
 
 Truck::Truck( Printer & prt, 
               NameServer & nameServer, 

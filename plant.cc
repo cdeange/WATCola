@@ -1,6 +1,7 @@
 #include "plant.h"
 #include "truck.h"
 #include "MPRNG.h"
+#include <iostream>
 
 using namespace std;
 
@@ -21,9 +22,17 @@ BottlingPlant::BottlingPlant(
   mShutdown = false;
   mPrinter.print( Printer::BottlingPlant,
                   BottlingPlant::Starting );
+
+  mTruck = new Truck( mPrinter, 
+                      mNameServer, 
+                      (*this),
+                      mNumVendingMachines,
+                      mMaxStockPerFlavour );
 }
 
 BottlingPlant::~BottlingPlant() {
+  delete mTruck;
+  mTruck = NULL;
   mPrinter.print( Printer::BottlingPlant,
                   BottlingPlant::Finished );
 }
@@ -48,11 +57,6 @@ void BottlingPlant::getShipment( unsigned int cargo[] ) {
 }
 
 void BottlingPlant::main() {
-  Truck truck( mPrinter, 
-               mNameServer, 
-               (*this),
-               mNumVendingMachines,
-               mMaxStockPerFlavour );
   
   while( !mShutdown ) {
     yield(mTimeBetweenShipments);
