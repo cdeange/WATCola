@@ -21,7 +21,7 @@ BottlingPlant::BottlingPlant(
 
   mShutdown = false;
   mPrinter.print( Printer::BottlingPlant,
-                  Starting );
+                  BottlingPlant::Starting );
 
   mTruck = new Truck( mPrinter, 
                       mNameServer, 
@@ -34,7 +34,7 @@ BottlingPlant::~BottlingPlant() {
   delete mTruck;
   mTruck = NULL;
   mPrinter.print( Printer::BottlingPlant,
-                  Finished );
+                  BottlingPlant::Finished );
 }
 
 void BottlingPlant::getShipment( unsigned int cargo[] ) {
@@ -44,7 +44,7 @@ void BottlingPlant::getShipment( unsigned int cargo[] ) {
   }
     
   mPrinter.print( Printer::BottlingPlant,
-                  Pickup );
+                  BottlingPlant::Pickup );
   unsigned int total = 0;
 
   for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
@@ -53,7 +53,7 @@ void BottlingPlant::getShipment( unsigned int cargo[] ) {
   }
 
   mPrinter.print( Printer::BottlingPlant,
-                  (char)Generating,
+                  ( char ) BottlingPlant::Generating, 
                   total );
 }
 
