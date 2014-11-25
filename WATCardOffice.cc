@@ -77,33 +77,29 @@ WATCardOffice::Courier::Courier ( unsigned int id, WATCardOffice & office, Print
 void WATCardOffice::Courier::main() {
 
   while ( true ) {
-    _Accept( ~Courier ) {
-      break;
 
-    } _Else {
-      Job* job = mOffice.requestWork();
-      if ( job == NULL ) break;
+    Job* job = mOffice.requestWork();
+    if ( job == NULL ) break;
 
-      Args args = job->mArgs;
-      mPrinter.print( Printer::Courier, mId, ( char ) Courier::StartTransfer, args.mSid, args.mAmount );
+    Args args = job->mArgs;
+    mPrinter.print( Printer::Courier, mId, ( char ) Courier::StartTransfer, args.mSid, args.mAmount );
 
-      job->mBank.withdraw( args.mSid, args.mAmount );
-      if ( args.mWatcard == NULL ) args.mWatcard = new WATCard;
-      args.mWatcard->deposit( args.mAmount );
+    job->mBank.withdraw( args.mSid, args.mAmount );
+    if ( args.mWatcard == NULL ) args.mWatcard = new WATCard;
+    args.mWatcard->deposit( args.mAmount );
 
-      if ( RAND( LOSE_CARD_CHANCE - 1 ) == 0 ) {
-        job->mResult.exception( new Lost );
-        delete args.mWatcard;
+    if ( RAND( LOSE_CARD_CHANCE - 1 ) == 0 ) {
+      job->mResult.exception( new Lost );
+      delete args.mWatcard;
 
-      } else {
-        job->mResult.delivery( args.mWatcard );
-      }
-
-      delete job;
-
-      mPrinter.print( Printer::Courier, mId, ( char ) Courier::EndTransfer, args.mSid, args.mAmount );
-
+    } else {
+      job->mResult.delivery( args.mWatcard );
     }
+
+    delete job;
+
+    mPrinter.print( Printer::Courier, mId, ( char ) Courier::EndTransfer, args.mSid, args.mAmount );
+
   }
 
   mPrinter.print( Printer::Courier, mId, ( char ) Courier::Finished );

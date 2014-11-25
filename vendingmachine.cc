@@ -33,8 +33,10 @@ void VendingMachine::buy( Flavours flavour, WATCard &card ) {
   // This might break since the main might not start up as a result
   // TODO test
   if( balance < mCost ) {
+    uRendezvousAcceptor();
     throw Funds();
   } else if ( mInventory[flavour] <= 0 ) {
+    uRendezvousAcceptor();
     throw Stock();
   }
 

@@ -42,7 +42,7 @@ void BottlingPlant::getShipment( unsigned int cargo[] ) {
     uRendezvousAcceptor();
     throw Shutdown();
   }
-    
+
   mPrinter.print( Printer::BottlingPlant,
                   BottlingPlant::Pickup );
   unsigned int total = 0;

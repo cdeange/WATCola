@@ -79,13 +79,14 @@ void uMain::main() {
     students[i] = new Student( printer, nameServer, office, i, config.maxPurchases );
   }
 
-  delete plant;
-  
-  for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
-    delete machines[i];
-  }
+
   for ( unsigned int i = 0; i < config.numStudents; ++i ) {
     delete students[i];
+  }
+
+  delete plant;
+  for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
+    delete machines[i];
   }
 
 
