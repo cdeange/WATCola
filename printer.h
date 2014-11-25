@@ -3,10 +3,8 @@
 
 #include <vector>
 
-
 _Monitor / _Cormonitor Printer {
   
-
   public:
     enum Kind { 
       Parent, 
@@ -18,6 +16,7 @@ _Monitor / _Cormonitor Printer {
       Courier };
 
     Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers );
+    ~Printer();
     void print( Kind kind, char state );
     void print( Kind kind, char state, int value1 );
     void print( Kind kind, char state, int value1, int value2 );
@@ -27,23 +26,34 @@ _Monitor / _Cormonitor Printer {
 
     const unsigned int mStudentStartIndex;
     const unsigned int mMachineStartIndex;
+    const unsigned int mCourierStartIndex;
     vector<PrintInfo> mPrintList;
 
   private:
+    void printIfFlush( int index, PrintInfo & replaceInfo );
     struct TwoInfo {
-      // shit with two things
+      int mFirst;
+      int mSecond;
     };
+
     struct OneInfo {
-      // shit with one thing
+      int mFirst;
     };
-    
+
     union PrintData {
-      
+      TwoInfo mTwo;
+      OneInfo mOne;
     };
 
     struct PrintInfo {
-      Kind mPrintKind;
-      PrintData
+      Kind mKind
+      char mState;
+      PrintData mData;
+
+      PrintInfo();
+      PrintInfo( Kind & );
+      PrintInfo( Kind &, char, PrintData & );
+
     };
 };
 
