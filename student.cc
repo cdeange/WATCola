@@ -7,11 +7,20 @@
 
 using namespace std;
 
-Student::Student( Printer & printer, NameServer & nameServer, WATCardOffice & office, unsigned int id, 
-  unsigned int maxPurchases ) : mPrinter( printer ), mNameServer( nameServer ), mOffice( office ), mId( id ) {
+Student::Student( Printer & printer, 
+                  NameServer & nameServer, 
+                  WATCardOffice & office, 
+                  unsigned int id, 
+                  unsigned int maxPurchases ) 
+: mPrinter( printer ), mNameServer( nameServer ), mOffice( office ), mId( id ) {
 
   mPurchases = RAND( maxPurchases );
   mFavouriteFlavour = RAND( VendingMachine::FlavoursCount );
+  mPrinter.print( Printer::Student, 
+                  id, 
+                  Starting,
+                  mFavouriteFlavour,
+                  mPurchases );
 }
 
 void Student::main() {
@@ -22,11 +31,18 @@ void Student::main() {
     yield( RAND( 1, 10 ) );
 
     VendingMachine *machine = mNameServer.getMachine( mId );
+    mPrinter.print( Printer::Student,
+                    mId,
+                    (char)Selecting,
+                    machine->getId() );
 
     while ( true ) {
       try {
         machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *( mWatcard() ) );
-
+        mPrinter.print( Printer::Student,
+                        mId,
+                        (char)Buying,
+                        mWatcard()->getBalance() );
         // Successful purchase        
         break;
 
@@ -37,10 +53,14 @@ void Student::main() {
         machine = mNameServer.getMachine( mId );
 
       } catch ( WATCardOffice::Lost &ex ) {
+        mPrinter.print( Printer::Student,
+                        mId,
+                        (char)Lost );
+
         mWatcard = mOffice.create( mId, STARTING_BALANCE );
       }
     }
-
   }
 
+  mPrinter.print( Printer::Student, mId, (char)Finished );
 }
