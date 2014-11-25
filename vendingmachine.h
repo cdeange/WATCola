@@ -12,9 +12,11 @@ _Task VendingMachine {
 
   public:
     enum Flavours {
-      Cola = 0, 
-      // ADD MORE HERE
-      FlavoursCount = 1
+      Black_Cherry, 
+      Cream_Soda, 
+      Root_Beer, 
+      Lime, 
+      FlavoursCount
     };                 // flavours of soda (YOU DEFINE)
 
     _Event Funds {};                       // insufficient funds
