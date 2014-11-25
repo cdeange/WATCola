@@ -49,7 +49,8 @@ void uMain::main() {
   srand(seed);
 
   // Must be created in the following order:
-  // Printer, bank, parent, WATCard office, name server, vending machines, bottling plant, and students
+  // Printer, bank, parent, WATCard office, 
+  // name server, vending machines, bottling plant, and students
 
   Printer printer( config.numStudents, config.numVendingMachines, config.numCouriers );
   Bank bank( config.numStudents );
@@ -59,11 +60,20 @@ void uMain::main() {
 
   VendingMachine* machines[config.numVendingMachines];
   for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
-    machines[i] = new VendingMachine( printer, nameServer, i, config.sodaCost, config.maxStockPerFlavour );
+    machines[i] = new VendingMachine( printer, 
+                                      nameServer, 
+                                      i, 
+                                      config.sodaCost, 
+                                      config.maxStockPerFlavour );
   }
 
-  BottlingPlant *plant = new BottlingPlant( printer, nameServer, config.numVendingMachines, config.maxShippedPerFlavour, 
-      config.maxStockPerFlavour, config.timeBetweenShipments );
+  BottlingPlant *plant = new BottlingPlant( 
+            printer, 
+            nameServer, 
+            config.numVendingMachines, 
+            config.maxShippedPerFlavour, 
+            config.maxStockPerFlavour, 
+            config.timeBetweenShipments );
 
   Student* students[config.numStudents];
   for ( unsigned int i = 0; i < config.numStudents; ++i ) {

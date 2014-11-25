@@ -179,6 +179,8 @@ void Printer::printLineAndFlushBuffer() {
     if( mPrintList[i].mHasData ) {
       cout << mPrintList[i].mState;
       switch( mPrintList[i].mData.mNumData ) {
+        case 0:
+          break;
         case 1:
           cout << mPrintList[i].mData.mFirst;
           break;
@@ -195,6 +197,8 @@ void Printer::printLineAndFlushBuffer() {
 
     if( i != lastPrintIndex ) cout << "\t";
   }
+
+  cout << endl;
 
 }
 
