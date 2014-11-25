@@ -18,7 +18,7 @@ BottlingPlant::BottlingPlant(
   mMaxStockPerFlavour( maxStockPerFlavour ),
   mTimeBetweenShipments( timeBetweenShipments ) {
 
-  shutdown = false;
+  mShutdown = false;
   mPrinter.print( Printer::BottlingPlant,
                   Starting );
 }
@@ -31,6 +31,7 @@ BottlingPlant::~BottlingPlant() {
 void BottlingPlant::getShipment( unsigned int cargo[] ) {
   _Accept( ~BottlingPlant ) {
     uRendezvousAcceptor();
+    mShutdown = true;
     throw Shutdown();
   } _Else {
     mPrinter.print( Printer::BottlingPlant,
@@ -53,11 +54,9 @@ void BottlingPlant::main() {
                mNumVendingMachines,
                mMaxStockPerFlavour );
   
-  while( true ) {
+  while( !mShutdown ) {
     yield(mTimeBetweenShipments);
     _Accept( getShipment ) {}
-    
-    if ( shutdown ) break;
   }
 
 }
