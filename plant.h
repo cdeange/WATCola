@@ -15,6 +15,7 @@ _Task BottlingPlant {
 
   private:
     void main();
+    
     enum State {
       Starting   = 'S', 
       Generating = 'G', 
@@ -29,7 +30,6 @@ _Task BottlingPlant {
     unsigned int mMaxStockPerFlavour;
     unsigned int mTimeBetweenShipments;
     bool shutdown;
-
 };
 
 #endif

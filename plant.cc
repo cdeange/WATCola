@@ -19,20 +19,30 @@ BottlingPlant::BottlingPlant(
   mTimeBetweenShipments( timeBetweenShipments ) {
 
   shutdown = false;
+  mPrinter.print( Printer::BottlingPlant,
+                  Starting );
 }
 
-BottlingPlant::~BottlingPlant() {}
+BottlingPlant::~BottlingPlant() {
+  mPrinter.print( Printer::BottlingPlant,
+                  Finished );
+}
 
 void BottlingPlant::getShipment( unsigned int cargo[] ) {
-  bool allzero = true;
   _Accept( ~BottlingPlant ) {
     uRendezvousAcceptor();
     throw Shutdown();
   } _Else {
+    mPrinter.print( Printer::BottlingPlant,
+                   Pickup );
+    unsigned int total = 0;
     for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
       cargo[i] = RAND(mMaxShippedPerFlavour);
-      if( cargo[i] != 0 && allzero ) allzero = false;
-    }  
+      total += cargo[i];
+    }
+    mPrinter.print( Printer::BottlingPlant,
+                    (char)Generating,
+                    total );
   }
 }
 
