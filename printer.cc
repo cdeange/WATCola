@@ -5,38 +5,31 @@
 
 using namespace std;
 
-Printer::PrintInfo::PrintInfo() {  
-  this->mHasData = false;
+Printer::PrintInfo::PrintInfo()
+    : mHasData( false ) {  
 }
 
 // Only used in initialization of the printer
-Printer::PrintInfo::PrintInfo( Kind kind ) {
-  this->mKind = kind;
-  this->mHasData = false;
+Printer::PrintInfo::PrintInfo( Kind kind )
+    : mKind( kind ), mHasData( false ) {
 }
 
 Printer::PrintInfo::PrintInfo( Kind kind, 
                                char state, 
-                               PrintData & data ) {
-  this->mKind = kind;
-  this->mState = state;
-  this->mData = data;
-  this->mHasData = true;
+                               PrintData & data )
+    : mKind( kind ), mState( state ), mData( data ), mHasData( true ) {
 }
 
-Printer::PrintData::PrintData() {
-  this->mNumData = 0;
+Printer::PrintData::PrintData()
+    : mNumData( 0 ) {
 }
 
-Printer::PrintData::PrintData( int first ) {
-  this->mNumData = 1;
-  this->mFirst = first;
+Printer::PrintData::PrintData( int first ) 
+    : mNumData( 1 ), mFirst( first ) {
 }
 
-Printer::PrintData::PrintData( int first, int second ) {
-  this->mNumData = 2;
-  this->mFirst = first;
-  this->mSecond = second;
+Printer::PrintData::PrintData( int first, int second )
+    : mNumData( 2 ), mFirst( first ), mSecond( second ) {
 }
 
 Printer::Printer( unsigned int numStudents,
