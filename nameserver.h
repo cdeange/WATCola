@@ -5,10 +5,22 @@
 #include "vendingmachine.h"
 
 _Task NameServer {
+
+    Printer & mPrinter;
+    unsigned int mNumVendingMachines;
+    unsigned int mNumStudents;
+    unsigned int mVMIndex;
+    unsigned int mRegisterIndex;
+    unsigned int mStudentIndex;
+
+    int* mStudents;
+    VendingMachine** mMachines;
+
     void main();
 
   public:
-    NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents );
+    NameServer( Printer & printer, unsigned int numVendingMachines, unsigned int numStudents );
+    ~NameServer();
     void VMregister( VendingMachine *vendingmachine );
     VendingMachine *getMachine( unsigned int id );
     VendingMachine **getMachineList();
