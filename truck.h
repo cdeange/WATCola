@@ -28,8 +28,11 @@ _Task Truck {
   unsigned int mCargo[VendingMachine::FlavoursCount];
 
 public:
-  Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
-         unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
+  Truck( Printer &prt, 
+         NameServer &nameServer, 
+         BottlingPlant &plant,
+         unsigned int numVendingMachines, 
+         unsigned int maxStockPerFlavour );
   ~Truck();
 };
 
