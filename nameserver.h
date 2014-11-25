@@ -9,6 +9,13 @@ _Task NameServer {
     void VMregister( VendingMachine *vendingmachine );
     VendingMachine *getMachine( unsigned int id );
     VendingMachine **getMachineList();
+
+    enum State {
+      Starting = 'S', 
+      Register = 'R', 
+      New      = 'N', 
+      Finished = 'F'
+    };
 };
 
 #endif

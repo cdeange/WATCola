@@ -12,8 +12,10 @@ _Monitor / _Cormonitor Printer {
       NameServer, 
       Truck, 
       BottlingPlant, 
-      Student, Vending, 
-      Courier };
+      Student, 
+      Vending, 
+      Courier
+    };
 
     Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers );
     ~Printer();

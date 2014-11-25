@@ -14,6 +14,14 @@ _Task VendingMachine {
     void restocked();
     _Nomutex unsigned int cost();
     _Nomutex unsigned int getId();
+
+    enum State {
+      Starting       = 'S', 
+      StartReloading = 'r', 
+      EndReloading   = 'R', 
+      Buying         = 'B', 
+      Finished       = 'F'
+    };
 };
 
 #endif

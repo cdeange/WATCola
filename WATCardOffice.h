@@ -7,7 +7,17 @@ _Task WATCardOffice {
         WATCard::FWATCard result;          // return future
         Job( Args args ) : args( args ) {}
     };
-    _Task Courier { ... };                 // communicates with bank
+
+    _Task Courier { 
+
+      public:
+        enum State {
+          Starting      = 'S', 
+          StartTransfer = 't', 
+          EndTransfer   = 'T', 
+          Finished      = 'F'
+        };
+    };                 // communicates with bank
 
     void main();
   public:
@@ -16,6 +26,16 @@ _Task WATCardOffice {
     WATCard::FWATCard create( unsigned int sid, unsigned int amount );
     WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );
     Job *requestWork();
+
+    enum State {
+      Starting     = 'S', 
+      RequestWork  = 'W', 
+      CreateWork   = 'C', 
+      TransferWork = 'T', 
+      Finished     = 'F'
+    };
+
 };
 
 #endif
+x

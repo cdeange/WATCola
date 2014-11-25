@@ -11,6 +11,13 @@ _Task BottlingPlant {
                  unsigned int timeBetweenShipments );
     void getShipment( unsigned int cargo[] );
 
+    enum State {
+      Starting   = 'S', 
+      Generating = 'G', 
+      Pickup     = 'P', 
+      Finished   = 'F'
+    };
+
 };
 
 #endif
