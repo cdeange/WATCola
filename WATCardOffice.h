@@ -11,8 +11,6 @@
 
 _Task WATCardOffice {
 
-  public:
-
     struct Args {
       unsigned int mSid;
       unsigned int mAmount;
@@ -25,6 +23,8 @@ _Task WATCardOffice {
         WATCard::FWATCard mResult;
         Job( Args args, Bank & bank ) : mArgs( args ), mBank( bank ) {}
     };
+
+  public:
 
     _Task Courier {
 
@@ -58,7 +58,7 @@ _Task WATCardOffice {
   public:
 
     _Event Lost {};                        // lost WATCard
-    WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers );
+    WATCardOffice( Printer & printer, Bank & bank, unsigned int numCouriers );
     ~WATCardOffice();
     WATCard::FWATCard create( unsigned int sid, unsigned int amount );
     WATCard::FWATCard transfer( unsigned int sid, unsigned int amount, WATCard *card );

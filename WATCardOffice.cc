@@ -77,19 +77,18 @@ void WATCardOffice::Courier::main() {
 
       Args args = job->mArgs;
 
-      if ( RAND( LOSE_CARD_CHANCE ) == 0 ) {
+      job->mBank.withdraw( args.mSid, args.mAmount );
+
+      if ( args.mWatcard == NULL ) {
+        args.mWatcard = new WATCard;
+      }
+
+      args.mWatcard->deposit( args.mAmount );
+      job->mResult.delivery( args.mWatcard );
+
+      if ( RAND( 1, LOSE_CARD_CHANCE ) == 0 ) {
         job->mResult.exception( new Lost );
         delete args.mWatcard;
-
-      } else {
-        job->mBank.withdraw( args.mSid, args.mAmount );
-
-        if ( args.mWatcard == NULL ) {
-          args.mWatcard = new WATCard;
-        }
-
-        args.mWatcard->deposit( args.mAmount );
-        job->mResult.delivery( args.mWatcard );
       }
 
       delete job;
