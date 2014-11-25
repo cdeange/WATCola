@@ -48,7 +48,11 @@ VendingMachine** NameServer::getMachineList() {
 }
 
 void NameServer::main() {
-  _Accept( ~NameServer ) break;
-  or _When( mVMIndex != mNumVendingMachines ) _Accept( VMRegister );
-  or _When( mVMIndex == mNumVendingMachines ) _Accept( getMachine, getMachineList );
+  while ( true ) {
+    _Accept( ~NameServer ) { 
+      break;
+    } or _When( mVMIndex != mNumVendingMachines ) _Accept( VMregister ) {
+    } or _When( mVMIndex == mNumVendingMachines ) _Accept( getMachine, getMachineList ) {
+    }
+  }
 }

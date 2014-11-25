@@ -5,6 +5,15 @@
 #include "printer.h"
 
 _Task BottlingPlant {
+  public:
+    _Event Shutdown {};                    // shutdown plant
+    BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
+                 unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
+                 unsigned int timeBetweenShipments );
+    ~BottlingPlant();
+    void getShipment( unsigned int cargo[] );
+
+  private:
     void main();
     enum State {
       Starting   = 'S', 
@@ -13,13 +22,13 @@ _Task BottlingPlant {
       Finished   = 'F'
     };
     
-  public:
-    _Event Shutdown {};                    // shutdown plant
-    BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
-                 unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
-                 unsigned int timeBetweenShipments );
-    void getShipment( unsigned int cargo[] );
-
+    Printer & mPrinter;
+    NameServer & mNameServer;
+    unsigned int mNumVendingMachines;
+    unsigned int mMaxShippedPerFlavour;
+    unsigned int mMaxStockPerFlavour;
+    unsigned int mTimeBetweenShipments;
+    bool shutdown;
 
 };
 
