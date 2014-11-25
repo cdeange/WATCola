@@ -13,7 +13,10 @@ Truck::Truck( Printer & prt,
   mMaxStockPerFlavour( maxStockPerFlavour ) {
 
   mStartVending = 0;
+}
 
+Truck::~Truck() {
+  mPrinter.print( Printer::Truck, Finished );
 }
 
 bool Truck::hasCargo() {
@@ -35,31 +38,47 @@ void Truck::main() {
       return;
     }
 
-    for( unsigned  machine = 0; machine < mNumVending; machine++ ) {
-      int index = ( mStartVending + machine ) % mNumVending;
+    // calculating the total cargo 
+    int total = 0;
+    for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
+      total += mCargo[i];
+    }
+    mPrinter.print(Printer::Truck, Pickup, total);
 
-      // We have no cargo left :( keep index and start again later
+    for( unsigned  machine = 0; machine < mNumVending; machine++ ) {
+
+      int machineId = ( mStartVending + machine ) % mNumVending;
+      mPrinter.print(Printer::Truck, Begin, machineId, total);
+
+      // We have no cargo left :( keep machineId and start again later
       if( !hasCargo() ) {
-        mStartVending = index;
+        mStartVending = machineId;
         break;
       }
 
       // We have cargo to give out to this machine! :D
-      unsigned int * machineInventory = machineList[index]->inventory();
+      unsigned int * machineInventory = machineList[machineId]->inventory();
+
       for( int flavor = 0; flavor < VendingMachine::FlavoursCount; flavor++ ) {
         unsigned int addedInventory = machineInventory[flavor] + mCargo[flavor];
-        if( addedInventory > mMaxStockPerFlavour ) {
-          mCargo[flavor] = mCargo[flavor] - ( mMaxStockPerFlavour - machineInventory[flavor] );
-          machineInventory[flavor] = mMaxStockPerFlavour;
+        int given;
+        
+        if( addedInventory >= mMaxStockPerFlavour ) {
+          given = ( mMaxStockPerFlavour - machineInventory[flavor] );
         } else {
-          mCargo[flavor] = 0;
-          machineInventory[flavor] += mCargo[flavor];
+          given = mCargo[flavor];
+          mPrinter.print( Printer::Truck, 
+                          Unsuccessful, 
+                          machineId, 
+                          mMaxStockPerFlavour - given );
         }
+
+        total = total - given;
+        machineInventory[flavor] += given;
+        mCargo[flavor] = mCargo[flavor] - given;
       }
-
-      machineList[index]->restocked();
+      machineList[machineId]->restocked();
+      mPrinter.print(Printer::Truck, Delivery, machineId, total);
     }
-    
   }
-
 }
