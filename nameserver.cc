@@ -32,18 +32,11 @@ VendingMachine* NameServer::getMachine( unsigned int id ) {
 
   if ( mStudents[id] == -1 ) {
     // Student has not been registered a VendingMachine yet
-    while ( mRegisterIndex == mVMIndex && mVMIndex != mNumVendingMachines ) {
-      _Accept( VMregister );
-    }
     mStudents[id] = mRegisterIndex;
     mRegisterIndex = ( mRegisterIndex + 1 ) % mNumStudents;
 
   } else {
     // Student should get the next VendingMachine
-    while ( mStudents[id] == ( int ) mVMIndex && mVMIndex != mNumVendingMachines ) {
-      _Accept( VMregister );
-    }
-
     mStudents[id] = ( mStudents[id] + 1 ) % mNumVendingMachines;
   }
 
@@ -55,5 +48,7 @@ VendingMachine** NameServer::getMachineList() {
 }
 
 void NameServer::main() {
-
+  _Accept( ~NameServer ) break;
+  or _When( mVMIndex != mNumVendingMachines ) _Accept( VMRegister );
+  or _When( mVMIndex == mNumVendingMachines ) _Accept( getMachine, getMachineList );
 }
