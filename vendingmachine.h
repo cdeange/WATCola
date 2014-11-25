@@ -9,12 +9,24 @@
 _Task NameServer;
 
 _Task VendingMachine {
+    enum State {
+      Starting       = 'S', 
+      StartReloading = 'r', 
+      EndReloading   = 'R', 
+      Buying         = 'B', 
+      Finished       = 'F'
+    };
     void main();
+
+    unsigned int * mInventory;
+    unsigned int mCost;
+    unsigned int mId;
+
   public:
     enum Flavours {
-      COLA = 0, 
+      Cola = 0, 
       // ADD MORE HERE
-      FLAVOURS_COUNT
+      FlavoursCount = 1
     };                 // flavours of soda (YOU DEFINE)
 
     _Event Funds {};                       // insufficient funds
@@ -27,13 +39,6 @@ _Task VendingMachine {
     _Nomutex unsigned int cost();
     _Nomutex unsigned int getId();
 
-    enum State {
-      Starting       = 'S', 
-      StartReloading = 'r', 
-      EndReloading   = 'R', 
-      Buying         = 'B', 
-      Finished       = 'F'
-    };
 };
 
 #endif

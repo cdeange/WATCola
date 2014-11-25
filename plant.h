@@ -6,7 +6,13 @@
 
 _Task BottlingPlant {
     void main();
-
+    enum State {
+      Starting   = 'S', 
+      Generating = 'G', 
+      Pickup     = 'P', 
+      Finished   = 'F'
+    };
+    
   public:
     _Event Shutdown {};                    // shutdown plant
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
@@ -14,12 +20,6 @@ _Task BottlingPlant {
                  unsigned int timeBetweenShipments );
     void getShipment( unsigned int cargo[] );
 
-    enum State {
-      Starting   = 'S', 
-      Generating = 'G', 
-      Pickup     = 'P', 
-      Finished   = 'F'
-    };
 
 };
 
