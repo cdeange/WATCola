@@ -3,7 +3,7 @@
 
 #include <vector>
 
-_Monitor / _Cormonitor Printer {
+_Monitor Printer {
   
   public:
     enum Kind { 

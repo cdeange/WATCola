@@ -83,7 +83,12 @@ void Printer::print( Kind kind, char state ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind ), newData );
+  int printIndex = getPrintIndex( kind );
+  if( state == 'F' ) {
+    printFinishLine( printIndex )
+  } else {
+    printIfFlush( printIndex, newData );
+  }
 }
 
 void Printer::print( Kind kind, char state, int value1 ) {
@@ -96,7 +101,7 @@ void Printer::print( Kind kind, char state, int value1 ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind ), newData );
+  printIfFlush( getPrintIndex( kind ), newData );
 }
 
 void Printer::print( Kind kind, char state, int value1, int value2 ) {
@@ -110,7 +115,7 @@ void Printer::print( Kind kind, char state, int value1, int value2 ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind ), newData );
+  printIfFlush( getPrintIndex( kind ), newData );
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state ) {
@@ -122,7 +127,7 @@ void Printer::print( Kind kind, unsigned int lid, char state ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind, lid ), newData );  
+  printIfFlush( getPrintIndex( kind, lid ), newData );  
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
@@ -135,7 +140,7 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind, lid ), newData );
+  printIfFlush( getPrintIndex( kind, lid ), newData );
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
@@ -149,7 +154,7 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1, int va
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind, lid ), newData );
+  printIfFlush( getPrintIndex( kind, lid ), newData );
 }
 
 unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {
