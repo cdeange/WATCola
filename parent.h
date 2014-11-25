@@ -5,15 +5,22 @@
 #include "printer.h"
 
 _Task Parent {
-    void main();
   public:
     Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
-
+    ~Parent();
     enum State {
       Starting = 'S', 
       Deposit  = 'D', 
       Finished = 'F'
     };
+
+  private:
+    void main();
+
+    Printer & mPrinter;
+    Bank & mBank;
+    unsigned int mNumStudents;
+    unsigned int mDelay;
 };
 
 #endif
