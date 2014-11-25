@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <sys/types.h>
 
 using namespace std;          // direct access to std
 
@@ -21,12 +22,10 @@ void usage( char *argv[] ) {
 
 void uMain::main() {
   ConfigParams config;
+  int seed = getpid();
   switch ( argc ) {
-    case 3: {
-      int seed;
+    case 3:
       if ( !convert( seed, argv[2] ) || seed < 0 ) usage( argv );
-      srand(seed);
-    }
     case 2:
       processConfigFile( argv[1], config );
     case 1:  
@@ -35,12 +34,10 @@ void uMain::main() {
       usage( argv );
   } // switch
 
+  srand(seed);
+
   Printer printer( config.numStudents,
                    config.numVendingMachines,
                    config.numCouriers );
 
-} // uMain::main
-
-// Local Variables: //
-// compile-command: "u++ uIO.cc" //
-// End: //
+}
