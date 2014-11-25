@@ -9,18 +9,6 @@
 _Task NameServer;
 
 _Task VendingMachine {
-    enum State {
-      Starting       = 'S', 
-      StartReloading = 'r', 
-      EndReloading   = 'R', 
-      Buying         = 'B', 
-      Finished       = 'F'
-    };
-    void main();
-
-    unsigned int * mInventory;
-    unsigned int mCost;
-    unsigned int mId;
 
   public:
     enum Flavours {
@@ -33,11 +21,32 @@ _Task VendingMachine {
     _Event Stock {};                       // out of stock for particular flavour
     VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,
                     unsigned int maxStockPerFlavour );
+    ~VendingMachine();
     void buy( Flavours flavour, WATCard &card );
     unsigned int *inventory();
     void restocked();
     _Nomutex unsigned int cost();
     _Nomutex unsigned int getId();
+
+  private:
+    enum State {
+      Starting       = 'S', 
+      StartReloading = 'r', 
+      EndReloading   = 'R', 
+      Buying         = 'B', 
+      Finished       = 'F'
+    };
+
+    void main();
+
+    Printer & mPrinter;
+    NameServer & mNameServer;
+    unsigned int mId;
+    unsigned int mCost;
+
+    unsigned int mMaxStockPerFlavor;
+
+    unsigned int mInventory[FlavoursCount];
 
 };
 

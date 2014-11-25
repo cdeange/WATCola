@@ -5,15 +5,14 @@
 
 using namespace std;
 
-Printer::PrintInfo::PrintInfo() {
-  this->mState = 'S';  
-  this->mHasData = true;
+Printer::PrintInfo::PrintInfo() {  
+  this->mHasData = false;
 }
 
+// Only used in initialization of the printer
 Printer::PrintInfo::PrintInfo( Kind kind ) {
   this->mKind = kind;
-  this->mState = 'S';
-  this->mHasData = true;
+  this->mHasData = false;
 }
 
 Printer::PrintInfo::PrintInfo( Kind kind, 
@@ -59,14 +58,14 @@ Printer::Printer( unsigned int numStudents,
   mStudentStartIndex = mPrintList.size() - 1;
   for( unsigned int i = 0; i < numStudents; i++ ) {
     cout << "Stud" << i << "\t";
-    mPrintList.push_back( Student );
+    mPrintList.push_back( PrintInfo( Student ) );
   }
 
   // Machines
   mMachineStartIndex = mPrintList.size() - 1;
   for( unsigned int i = 0; i < numVendingMachines; i++ ) {
     cout << "Mach" << i << "\t";
-    mPrintList.push_back( Vending );
+    mPrintList.push_back( PrintInfo( Vending ) );
   }
 
   // Couriers
@@ -74,8 +73,10 @@ Printer::Printer( unsigned int numStudents,
   for( unsigned int i = 0; i < numCouriers; i++ ) {
     cout << "Cour" << i;
     if( i != numCouriers - 1 ) cout << "\t";
-    mPrintList.push_back( Courier );
+    mPrintList.push_back( PrintInfo( Courier ) );
   }
+
+  cout << endl;
 
   // Stars
   for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
@@ -83,6 +84,7 @@ Printer::Printer( unsigned int numStudents,
     if( i != mPrintList.size() - 1 ) 
       cout << "\t";
   }
+  cout << endl;
 
 }
 

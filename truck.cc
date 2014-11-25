@@ -13,6 +13,7 @@ Truck::Truck( Printer & prt,
   mMaxStockPerFlavour( maxStockPerFlavour ) {
 
   mStartVending = 0;
+  mPrinter.print( Printer::Truck, Start );
 }
 
 Truck::~Truck() {
