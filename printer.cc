@@ -1,17 +1,22 @@
-#include "printer.h"
+#include <iostream>
 #include <string>
+
+#include "printer.h"
+
+using namespace std;
 
 Printer::PrintInfo::PrintInfo() {
   this->mState = 'S';  
   this->mHasData = true;
 }
 
-Printer::PrintInfo::PrintInfo( Kind & kind ) {
+Printer::PrintInfo::PrintInfo( Kind kind ) {
+  this->mKind = kind;
   this->mState = 'S';
   this->mHasData = true;
 }
 
-Printer::PrintInfo::PrintInfo( Kind & kind, 
+Printer::PrintInfo::PrintInfo( Kind kind, 
                                char state, 
                                PrintData & data ) {
   this->mKind = kind;
@@ -20,13 +25,13 @@ Printer::PrintInfo::PrintInfo( Kind & kind,
   this->mHasData = true;
 }
 
-Printer::PrintInfo::PrintData() {
+Printer::PrintData::PrintData() {
   this->mNumData = 0;
 }
 
 Printer::Printer( unsigned int numStudents,
                   unsigned int numVendingMachines,
-                  unsigend int numCouriers ) {
+                  unsigned int numCouriers ) {
 
   cout << "Parent \t";
   cout << "WATOff \t";
@@ -41,29 +46,29 @@ Printer::Printer( unsigned int numStudents,
 
   // Students
   mStudentStartIndex = mPrintList.size() - 1;
-  for( int i = 0; i < numStudents; i++ ) {
+  for( unsigned int i = 0; i < numStudents; i++ ) {
     cout << "Stud" << i << "\t";
     mPrintList.push_back( Student );
   }
 
   // Machines
   mMachineStartIndex = mPrintList.size() - 1;
-  for( int i = 0; i < numVendingMachines; i++ ) {
+  for( unsigned int i = 0; i < numVendingMachines; i++ ) {
     cout << "Mach" << i << "\t";
     mPrintList.push_back( Vending );
   }
 
   // Couriers
   mCourierStartIndex = mPrintList.size() - 1;
-  for( int i = 0; i < numCouriers; i++ ) {
+  for( unsigned int i = 0; i < numCouriers; i++ ) {
     cout << "Cour" << i;
-    if( i != numCourier - 1 ) cout << "\t";
+    if( i != numCouriers - 1 ) cout << "\t";
     mPrintList.push_back( Courier );
   }
 
   // Stars
-  for( int i = 0; i < mPrintList.size(); i++ ) {
-    cout << "*******" <<;
+  for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
+    cout << "*******";
     if( i != mPrintList.size() - 1 ) 
       cout << "\t";
   }
@@ -83,7 +88,7 @@ void Printer::print( Kind kind, char state ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind ), newData );
+  printIfFlush(getPrintIndex( kind ), newInfo );
 }
 
 void Printer::print( Kind kind, char state, int value1 ) {
@@ -92,25 +97,25 @@ void Printer::print( Kind kind, char state, int value1 ) {
   newData.mFirst = value1;
 
   PrintInfo newInfo;
-  mInfo.mState = state;
+  newInfo.mState = state;
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind ), newData );
+  printIfFlush(getPrintIndex( kind ), newInfo );
 }
 
 void Printer::print( Kind kind, char state, int value1, int value2 ) {
-  Printdata newData;
+  PrintData newData;
   newData.mNumData = 2;
   newData.mFirst = value1;
   newData.mSecond = value2;
 
   PrintInfo newInfo;
-  mInfo.mState = state;
+  newInfo.mState = state;
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind ), newData );
+  printIfFlush(getPrintIndex( kind ), newInfo );
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state ) {
@@ -122,7 +127,7 @@ void Printer::print( Kind kind, unsigned int lid, char state ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind, lid ), newData );  
+  printIfFlush(getPrintIndex( kind, lid ), newInfo );  
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
@@ -135,7 +140,7 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind, lid ), newData );
+  printIfFlush(getPrintIndex( kind, lid ), newInfo );
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
@@ -149,7 +154,7 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1, int va
   newInfo.mKind = kind;
   newInfo.mData = newData;
 
-  printIfFlush(getPrintIndex( kind, lid ), newData );
+  printIfFlush(getPrintIndex( kind, lid ), newInfo );
 }
 
 unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {
@@ -178,25 +183,25 @@ unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {
   return 0;
 }
 
-void Printer::printIfFlush( unsigned int index, PrintInfo& replaceInfo ) {
+void Printer::printIfFlush( unsigned int index, PrintInfo & replaceInfo ) {
   if( mPrintList[index].mHasData ) {
     printLineAndFlushBuffer();
   }
 
   mPrintList[index] = replaceInfo;
-  mPrintList[index].hasData = true;
+  mPrintList[index].mHasData = true;
 }
 
 void Printer::printLineAndFlushBuffer() {
 
   // That thing where you don't print anything else after the last element
-  int lastPrintIndex = 0;
+  unsigned int lastPrintIndex = 0;
   for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
-    if( mPrintList[i].hasData ) lastPrintIndex = i;
+    if( mPrintList[i].mHasData ) lastPrintIndex = i;
   }
 
   for( unsigned int i = 0; i <= lastPrintIndex; i++ ) {
-    if( mPrintList[i].hasData ) {
+    if( mPrintList[i].mHasData ) {
       cout << mPrintList[i].mState;
       switch( mPrintList[i].mData.mNumData ) {
         case 1:
@@ -211,7 +216,7 @@ void Printer::printLineAndFlushBuffer() {
       }
     }
     
-    mPrintList[i].hasData = false;
+    mPrintList[i].mHasData = false;
 
     if( i != lastPrintIndex ) cout << "\t";
   }
@@ -220,14 +225,14 @@ void Printer::printLineAndFlushBuffer() {
 
 void Printer::printFinishLine( unsigned int index ) {
   printLineAndFlushBuffer();
-  for( unsigned int i = 0; i < mPrinterList.size() i++ ) {
-    if( i == finishedId ) {
+  for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
+    if( i == index ) {
       cout << "F";
     } else {
       cout << "...";
     }
 
-    if( i != mPrinterList.size() - 1 ) cout << "\t";
+    if( i != mPrintList.size() - 1 ) cout << "\t";
   }
 
   cout << endl;

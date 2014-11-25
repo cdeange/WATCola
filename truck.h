@@ -1,6 +1,10 @@
 #ifndef TRUCK_H_
 #define TRUCK_H_
 
+#include "nameserver.h"
+#include "plant.h"
+#include "printer.h"
+
 _Task Truck {
     void main();
 

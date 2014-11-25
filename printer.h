@@ -1,11 +1,12 @@
-#ifndef PRINTER_H
-#define PRINTER_H
+#ifndef PRINTER_H_
+#define PRINTER_H_
 
 #include <vector>
 
-_Monitor / _Cormonitor Printer {
-  
+_Monitor Printer {
+
   public:
+
     enum Kind { 
       Parent, 
       WATCardOffice, 
@@ -26,18 +27,8 @@ _Monitor / _Cormonitor Printer {
     void print( Kind kind, unsigned int lid, char state, int value1 );
     void print( Kind kind, unsigned int lid, char state, int value1, int value2 );
 
-    const unsigned int mStudentStartIndex;
-    const unsigned int mMachineStartIndex;
-    const unsigned int mCourierStartIndex;
-    vector<PrintInfo> mPrintList;
 
-  private:
-    void printIfFlush( unsigned int index, PrintInfo & replaceInfo );
-    void printLineAndFlushBuffer();
-    void printFinishLine( unsigned int index );
-    unsigned int getPrintIndex( Kind kind, unsigned int id = 0 );
-
-    union PrintData {
+    struct PrintData {
       int mNumData;
       int mFirst;
       int mSecond;
@@ -46,17 +37,27 @@ _Monitor / _Cormonitor Printer {
     };
 
     struct PrintInfo {
-      Kind mKind
+      Kind mKind;
       char mState;
       PrintData mData;
       bool mHasData;
 
       PrintInfo();
-      PrintInfo( Kind & );
-      PrintInfo( Kind &, char, PrintData & );
-
+      PrintInfo( Kind );
+      PrintInfo( Kind , char, PrintData & );
     };
 
+  private:
+
+    unsigned int mStudentStartIndex;
+    unsigned int mMachineStartIndex;
+    unsigned int mCourierStartIndex;
+    std::vector<PrintInfo> mPrintList;
+
+    void printIfFlush( unsigned int index, PrintInfo & replaceInfo );
+    void printLineAndFlushBuffer();
+    void printFinishLine( unsigned int index );
+    unsigned int getPrintIndex( Kind kind, unsigned int id = 0 );
 
 };
 

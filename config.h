@@ -11,7 +11,7 @@
 #define ParentalDelay        2
 #define NumCouriers          1
 
-struct ConfigParms {
+struct ConfigParams {
   unsigned int sodaCost;                 // MSRP per bottle
   unsigned int numStudents;              // number of students to create
   unsigned int maxPurchases;             // maximum number of bottles a student purchases
@@ -22,5 +22,7 @@ struct ConfigParms {
   unsigned int parentalDelay;            // length of time between cash deposits
   unsigned int numCouriers;              // number of couriers in the pool
 };
+
+void processConfigFile( const char *configFile, ConfigParams &cParams );
 
 #endif

@@ -1,6 +1,9 @@
 #ifndef STUDENT_H_
 #define STUDENT_H_
 
+#include "nameserver.h"
+#include "printer.h"
+#include "WATCardOffice.h"
 
 _Task Student {
 

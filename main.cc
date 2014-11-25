@@ -2,10 +2,12 @@
 #include <fstream>
 #include <sstream>
 #include <sys/types.h>
+#include <cstdlib>           // exit
+
+#include "config.h"
+#include "printer.h"
 
 using namespace std;          // direct access to std
-
-#include <cstdlib>           // exit
 
 bool convert( int &val, char *buffer ) {    // convert C string to integer
     std::stringstream ss( buffer );         // connect stream and buffer
