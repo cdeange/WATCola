@@ -4,10 +4,6 @@
 _Task Truck {
     void main();
 
-  public:
-    Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
-           unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
-
     enum State {
       Starting     = 'S', 
       Pickup       = 'P', 
@@ -16,6 +12,15 @@ _Task Truck {
       Delivery     = 'D', 
       Finished     = 'F'
     };
+
+    Printer & mPrinter;
+    NameServer & mNameServer;
+    BottlingPlant & mPlant;
+    unsigned int mNumVending;
+
+  public:
+    Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
+           unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
 
 };
 
