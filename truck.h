@@ -6,20 +6,30 @@
 #include "printer.h"
 
 _Task Truck {
-    void main();
+  void main();
+  bool hasCargo();
 
-  public:
-    Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
-           unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
+  enum State {
+    Starting     = 'S', 
+    Pickup       = 'P', 
+    Begin        = 'd', 
+    Unsuccessful = 'U', 
+    Delivery     = 'D', 
+    Finished     = 'F'
+  };
 
-    enum State {
-      Starting     = 'S', 
-      Pickup       = 'P', 
-      Begin        = 'd', 
-      Unsuccessful = 'U', 
-      Delivery     = 'D', 
-      Finished     = 'F'
-    };
+  Printer & mPrinter;
+  NameServer & mNameServer;
+  BottlingPlant & mPlant;
+  unsigned int mNumVending;
+  unsigned int mMaxStockPerFlavour;
+
+  unsigned int mStartVending;
+  unsigned int mCargo[VendingMachine::FlavoursCount];
+
+public:
+  Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
+         unsigned int numVendingMachines, unsigned int maxStockPerFlavour );
 
 };
 
