@@ -89,12 +89,7 @@ void Printer::print( Kind kind, char state ) {
   PrintData newData;
   PrintInfo newInfo( kind, state, newData );
 
-  int printIndex = getPrintIndex( kind );
-  if( state == 'F' ) {
-    printFinishLine( printIndex );
-  } else {
-    printIfFlush( printIndex, newInfo );
-  }
+  printIfFlush( getPrintIndex( kind ), newInfo );
 }
 
 void Printer::print( Kind kind, char state, int value1 ) {
@@ -165,6 +160,10 @@ void Printer::printIfFlush( unsigned int index, PrintInfo & replaceInfo ) {
 
   mPrintList[index] = replaceInfo;
   mPrintList[index].mHasData = true;
+
+  if ( replaceInfo.mState == 'F' ) {
+    printFinishLine( index );
+  }
 }
 
 void Printer::printLineAndFlushBuffer() {
@@ -203,7 +202,7 @@ void Printer::printLineAndFlushBuffer() {
 }
 
 void Printer::printFinishLine( unsigned int index ) {
-  printLineAndFlushBuffer();
+
   for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
     if( i == index ) {
       cout << "F";
