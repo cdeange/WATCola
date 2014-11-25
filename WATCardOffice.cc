@@ -80,26 +80,28 @@ void WATCardOffice::Courier::main() {
       break;
 
     } _Else {
+
+      mPrinter.print( Printer::Courier, mId, (char)StartTransfer );
       Job* job = mOffice.requestWork();
       if ( job == NULL ) break;
 
       Args args = job->mArgs;
-
       job->mBank.withdraw( args.mSid, args.mAmount );
 
-      if ( args.mWatcard == NULL ) {
-        args.mWatcard = new WATCard;
-      }
-
+      if ( args.mWatcard == NULL ) args.mWatcard = new WATCard;
       args.mWatcard->deposit( args.mAmount );
-      job->mResult.delivery( args.mWatcard );
 
-      if ( RAND( 1, LOSE_CARD_CHANCE ) == 0 ) {
+      if ( RAND( LOSE_CARD_CHANCE - 1 ) == 0 ) {
         job->mResult.exception( new Lost );
         delete args.mWatcard;
+
+      } else {
+        job->mResult.delivery( args.mWatcard );
       }
 
       delete job;
+
+      mPrinter.print( Printer::Courier, mId, (char)EndTransfer );
 
     }
   }
