@@ -1,16 +1,6 @@
 #ifndef CONFIG_PARAMS_H_
 #define CONFIG_PARAMS_H_
 
-#define SodaCost             2
-#define NumStudents          2
-#define MaxPurchases         8
-#define NumVendingMachines   3
-#define MaxStockPerFlavour   5
-#define MaxShippedPerFlavour 3
-#define TimeBetweenShipments 3
-#define ParentalDelay        2
-#define NumCouriers          1
-
 struct ConfigParams {
   unsigned int sodaCost;                 // MSRP per bottle
   unsigned int numStudents;              // number of students to create
