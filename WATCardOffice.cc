@@ -80,14 +80,13 @@ void WATCardOffice::Courier::main() {
       break;
 
     } _Else {
-
-      mPrinter.print( Printer::Courier, mId, (char)StartTransfer );
       Job* job = mOffice.requestWork();
       if ( job == NULL ) break;
 
       Args args = job->mArgs;
-      job->mBank.withdraw( args.mSid, args.mAmount );
+      mPrinter.print( Printer::Courier, mId, (char)StartTransfer, args.mSid, args.mAmount );
 
+      job->mBank.withdraw( args.mSid, args.mAmount );
       if ( args.mWatcard == NULL ) args.mWatcard = new WATCard;
       args.mWatcard->deposit( args.mAmount );
 
@@ -101,7 +100,7 @@ void WATCardOffice::Courier::main() {
 
       delete job;
 
-      mPrinter.print( Printer::Courier, mId, (char)EndTransfer );
+      mPrinter.print( Printer::Courier, mId, (char)EndTransfer, args.mSid, args.mAmount );
 
     }
   }
