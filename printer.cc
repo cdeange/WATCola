@@ -48,21 +48,21 @@ Printer::Printer( unsigned int numStudents,
   mPrintList.push_back( PrintInfo( BottlingPlant ) );
 
   // Students
-  mStudentStartIndex = mPrintList.size() - 1;
+  mStudentStartIndex = mPrintList.size();
   for( unsigned int i = 0; i < numStudents; i++ ) {
     cout << "Stud" << i << "\t";
     mPrintList.push_back( PrintInfo( Student ) );
   }
 
   // Machines
-  mMachineStartIndex = mPrintList.size() - 1;
+  mMachineStartIndex = mPrintList.size();
   for( unsigned int i = 0; i < numVendingMachines; i++ ) {
     cout << "Mach" << i << "\t";
     mPrintList.push_back( PrintInfo( Vending ) );
   }
 
   // Couriers
-  mCourierStartIndex = mPrintList.size() - 1;
+  mCourierStartIndex = mPrintList.size();
   for( unsigned int i = 0; i < numCouriers; i++ ) {
     cout << "Cour" << i;
     if( i != numCouriers - 1 ) cout << "\t";
