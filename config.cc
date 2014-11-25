@@ -18,22 +18,22 @@ static bool comments( ifstream &in, string &name ) {
 } // comments
 
 // Process the configuration file to set the parameters of the simulation.
-void processConfigFile( const char *configFile, ConfigParms &cparms ) {
+void processConfigFile( const char *configFile, ConfigParams &cParams ) {
     const unsigned int Parmnum = 9;
     struct {
         const char *name;				// configuration name
         bool used;					// already supplied ?
         unsigned int &value;				// location to put configuration value
-    } static parms[Parmnum] = {
-        { "SodaCost", false, cparms.sodaCost },
-        { "NumStudents", false, cparms.numStudents },
-        { "MaxPurchases", false, cparms.maxPurchases },
-        { "NumVendingMachines", false, cparms.numVendingMachines },
-        { "MaxStockPerFlavour", false, cparms.maxStockPerFlavour },
-        { "MaxShippedPerFlavour", false, cparms.maxShippedPerFlavour },
-        { "TimeBetweenShipments", false, cparms.timeBetweenShipments },
-        { "ParentalDelay", false, cparms.parentalDelay },
-        { "NumCouriers", false, cparms.numCouriers },
+    } static Params[Parmnum] = {
+        { "SodaCost", false, cParams.sodaCost },
+        { "NumStudents", false, cParams.numStudents },
+        { "MaxPurchases", false, cParams.maxPurchases },
+        { "NumVendingMachines", false, cParams.numVendingMachines },
+        { "MaxStockPerFlavour", false, cParams.maxStockPerFlavour },
+        { "MaxShippedPerFlavour", false, cParams.maxShippedPerFlavour },
+        { "TimeBetweenShipments", false, cParams.timeBetweenShipments },
+        { "ParentalDelay", false, cParams.parentalDelay },
+        { "NumCouriers", false, cParams.numCouriers },
     };
     string name;
     int value;
@@ -45,9 +45,9 @@ void processConfigFile( const char *configFile, ConfigParms &cparms ) {
 
 	for ( cnt = 0 ; cnt < Parmnum; cnt += 1 ) {	// parameter names can appear in any order
 	  if ( comments( in, name ) ) break;		// eof ?
-	    for ( posn = 0; posn < Parmnum && name != parms[posn].name; posn += 1 ); // linear search
+	    for ( posn = 0; posn < Parmnum && name != Params[posn].name; posn += 1 ); // linear search
 	  if ( posn == Parmnum ) break;			// configuration not found ?
-	  if ( parms[posn].used ) break;		// duplicate configuration ?
+	  if ( Params[posn].used ) break;		// duplicate configuration ?
 	    in >> value;
 	    if ( value <= 0 ) {
 		cerr << "Error: file \"" << configFile << "\" parameter " << name
@@ -57,8 +57,8 @@ void processConfigFile( const char *configFile, ConfigParms &cparms ) {
 	  if ( in.fail() ) break;
 	    in.ignore( numeric_limits<int>::max(), '\n' ); // ignore remainder of line
 	    numOfParm += 1;
-	    parms[posn].used = true;
-	    parms[posn].value = value;
+	    Params[posn].used = true;
+	    Params[posn].value = value;
 	} // for
 
 	if ( numOfParm != Parmnum ) {

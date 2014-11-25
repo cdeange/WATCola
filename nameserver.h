@@ -1,6 +1,9 @@
 #ifndef NAMESERVER_H_
 #define NAMESERVER_H_
 
+#include "printer.h"
+#include "vendingmachine.h"
+
 _Task NameServer {
     void main();
 

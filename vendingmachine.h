@@ -1,10 +1,22 @@
 #ifndef VENDING_MACHINE_H_
 #define VENDING_MACHINE_H_
 
+#include <uFuture.h>
+
+#include "printer.h"
+#include "WATCard.h"
+
+_Task NameServer;
+
 _Task VendingMachine {
     void main();
   public:
-    enum Flavours { ... };                 // flavours of soda (YOU DEFINE)
+    enum Flavours {
+      COLA = 0, 
+      // ADD MORE HERE
+      FLAVOURS_COUNT
+    };                 // flavours of soda (YOU DEFINE)
+
     _Event Funds {};                       // insufficient funds
     _Event Stock {};                       // out of stock for particular flavour
     VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost,

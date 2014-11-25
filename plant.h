@@ -1,6 +1,9 @@
 #ifndef BOTTLING_PLANT_H_
 #define BOTTLING_PLANT_H_
 
+#include "nameserver.h"
+#include "printer.h"
+
 _Task BottlingPlant {
     void main();
 

@@ -1,6 +1,9 @@
-#include "parent.h"
+#include "MPRNG.h"
 #include "bank.h"
+#include "parent.h"
 #include "printer.h"
+
+using namespace std;
 
 Parent::Parent( Printer & prt,
                 Bank & bank,
@@ -12,7 +15,7 @@ Parent::Parent( Printer & prt,
     mDelay(parentalDelay) {}
 
 Parent::~Parent() {
-  mPrinter.print( Parent, Finished );
+  mPrinter.print( Printer::Parent, Finished );
 }
 
 void Parent::main() {
@@ -20,9 +23,9 @@ void Parent::main() {
     // Assignment says use _Else, figure out why :O
     _Accept( ~Parent ) { return; }
     unsigned int money = RAND(1, 3);
-    unsigned int studentId = RAND(numStudents-1);
-    yield(parentalDelay);
-    mPrinter.print( Parent, Deposit, studentId, money );
+    unsigned int studentId = RAND(mNumStudents - 1);
+    yield(mDelay);
+    mPrinter.print( Printer::Parent, (char) Deposit, studentId, money );
     mBank.deposit( studentId, money );
   }
 }

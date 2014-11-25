@@ -1,6 +1,9 @@
 #ifndef PARENT_H_
 #define PARENT_H_
 
+#include "bank.h"
+#include "printer.h"
+
 _Task Parent {
   public:
     Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );

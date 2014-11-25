@@ -1,6 +1,8 @@
 #ifndef BANK_H_
 #define BANK_H_
 
+#include <vector>
+
 _Monitor Bank {
   public:
     Bank( unsigned int numStudents );
@@ -8,7 +10,7 @@ _Monitor Bank {
     void withdraw( unsigned int id, unsigned int amount );
 
   private:
-    vector<unsigned int> mMonies;
+    std::vector<unsigned int> mBalances;
 };
 
 #endif
