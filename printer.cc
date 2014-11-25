@@ -186,7 +186,7 @@ void Printer::printLineAndFlushBuffer() {
           break;
         case 2:
           cout << mPrintList[i].mData.mFirst;
-          cout << mPrintList[i].mData.mSecond;
+          cout << "," << mPrintList[i].mData.mSecond;
           break;
         default:
           cerr << "ERROR: number of data points is wrong" << endl;
