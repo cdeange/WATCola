@@ -56,36 +56,36 @@ void uMain::main() {
   Bank bank( config.numStudents );
   Parent parent( printer, bank, config.numStudents, config.parentalDelay );
   WATCardOffice office( printer, bank, config.numCouriers );
-  NameServer nameServer( printer, config.numVendingMachines, config.numStudents );
+  // NameServer nameServer( printer, config.numVendingMachines, config.numStudents );
 
-  VendingMachine* machines[config.numVendingMachines];
-  for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
-    machines[i] = new VendingMachine( printer, 
-                                      nameServer, 
-                                      i, 
-                                      config.sodaCost, 
-                                      config.maxStockPerFlavour );
-  }
+  // VendingMachine* machines[config.numVendingMachines];
+  // for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
+  //   machines[i] = new VendingMachine( printer, 
+  //                                     nameServer, 
+  //                                     i, 
+  //                                     config.sodaCost, 
+  //                                     config.maxStockPerFlavour );
+  // }
 
-  BottlingPlant *plant = new BottlingPlant( 
-            printer, 
-            nameServer, 
-            config.numVendingMachines, 
-            config.maxShippedPerFlavour, 
-            config.maxStockPerFlavour, 
-            config.timeBetweenShipments );
+  // BottlingPlant *plant = new BottlingPlant( 
+  //           printer, 
+  //           nameServer, 
+  //           config.numVendingMachines, 
+  //           config.maxShippedPerFlavour, 
+  //           config.maxStockPerFlavour, 
+  //           config.timeBetweenShipments );
 
-  Student* students[config.numStudents];
-  for ( unsigned int i = 0; i < config.numStudents; ++i ) {
-    students[i] = new Student( printer, nameServer, office, i, config.maxPurchases );
-  }
+  // Student* students[config.numStudents];
+  // for ( unsigned int i = 0; i < config.numStudents; ++i ) {
+  //   students[i] = new Student( printer, nameServer, office, i, config.maxPurchases );
+  // }
 
-  delete plant;
-  for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
-    delete machines[i];
-  }
-  for ( unsigned int i = 0; i < config.numStudents; ++i ) {
-    delete students[i];
-  }
+  // delete plant;
+  // for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
+  //   delete machines[i];
+  // }
+  // for ( unsigned int i = 0; i < config.numStudents; ++i ) {
+  //   delete students[i];
+  // }
 
 }

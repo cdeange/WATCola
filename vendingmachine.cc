@@ -1,5 +1,6 @@
 #include "vendingmachine.h"
 #include "nameserver.h"
+#include <iostream>
 
 using namespace std;
 
