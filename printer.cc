@@ -24,6 +24,21 @@ Printer::PrintInfo::PrintData() {
   this->mNumData = 0;
 }
 
+Printer::PrintData::PrintData() {
+  mNumData = 0;
+}
+
+Printer::PrintData::PrintData( int first ) {
+  mNumData = 1;
+  mFirst = first;
+}
+
+Printer::PrintData::PrintData( int first, int second ) {
+  mNumData = 2;
+  mFirst = first;
+  mSecond = second;
+}
+
 Printer::Printer( unsigned int numStudents,
                   unsigned int numVendingMachines,
                   unsigend int numCouriers ) {
@@ -76,12 +91,7 @@ Printer::~Printer() {
 
 void Printer::print( Kind kind, char state ) {
   PrintData newData;
-  newData.mNumData = 0;
-
-  PrintInfo newInfo;
-  newInfo.mState = state;
-  newInfo.mKind = kind;
-  newInfo.mData = newData;
+  PrintInfo newInfo( kind, state, newData );
 
   int printIndex = getPrintIndex( kind );
   if( state == 'F' ) {
@@ -92,69 +102,38 @@ void Printer::print( Kind kind, char state ) {
 }
 
 void Printer::print( Kind kind, char state, int value1 ) {
-  PrintData newData;
-  newData.mNumData = 1;
-  newData.mFirst = value1;
+  PrintData newData( mNumData, mFirst );
 
-  PrintInfo newInfo;
-  mInfo.mState = state;
-  newInfo.mKind = kind;
-  newInfo.mData = newData;
-
-  printIfFlush( getPrintIndex( kind ), newData );
+  printIfFlush( getPrintIndex( kind ),
+                PrintInfo( kind, state, newData ) );
 }
 
 void Printer::print( Kind kind, char state, int value1, int value2 ) {
-  Printdata newData;
-  newData.mNumData = 2;
-  newData.mFirst = value1;
-  newData.mSecond = value2;
+  Printdata newData( value1, value2 );
 
-  PrintInfo newInfo;
-  mInfo.mState = state;
-  newInfo.mKind = kind;
-  newInfo.mData = newData;
-
-  printIfFlush( getPrintIndex( kind ), newData );
+  printIfFlush( getPrintIndex( kind ), 
+                PrintInfo( kind, state, newData ) );
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state ) {
   PrintData newData;
-  newData.mNumData = 0;
 
-  PrintInfo newInfo;
-  newInfo.mState = state;
-  newInfo.mKind = kind;
-  newInfo.mData = newData;
-
-  printIfFlush( getPrintIndex( kind, lid ), newData );  
+  printIfFlush( getPrintIndex( kind, lid ), 
+                PrintInfo( kind, state, newData ) );  
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
-  PrintData newData;
-  newData.mNumData = 1;
-  newData.mFirst = value1;
+  PrintData newData( value1 );
 
-  PrintInfo newInfo;
-  newInfo.mState = state;
-  newInfo.mKind = kind;
-  newInfo.mData = newData;
-
-  printIfFlush( getPrintIndex( kind, lid ), newData );
+  printIfFlush( getPrintIndex( kind, lid ), 
+                PrintInfo( kind, state, newData ) );
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
-  PrintData newData;
-  newData.mNumData = 2;
-  newData.mFirst = value1;
-  newData.mSecond = value2;
+  PrintData newData( value1, value2 );
 
-  PrintInfo newInfo;
-  newInfo.mState = state;
-  newInfo.mKind = kind;
-  newInfo.mData = newData;
-
-  printIfFlush( getPrintIndex( kind, lid ), newData );
+  printIfFlush( getPrintIndex( kind, lid ), 
+                PrintInfo( kind, state, newData ) );
 }
 
 unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {

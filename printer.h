@@ -43,6 +43,8 @@ _Monitor Printer {
       int mSecond;
 
       PrintData();
+      PrintData( int );
+      PrintData( int, int );
     };
 
     struct PrintInfo {
