@@ -18,7 +18,7 @@ Student::Student( Printer & printer,
   mFavouriteFlavour = RAND( VendingMachine::FlavoursCount );
   mPrinter.print( Printer::Student, 
                   id, 
-                  Starting,
+                  Student::Starting,
                   mFavouriteFlavour,
                   mPurchases );
 }
@@ -33,7 +33,7 @@ void Student::main() {
     VendingMachine *machine = mNameServer.getMachine( mId );
     mPrinter.print( Printer::Student,
                     mId,
-                    (char)Selecting,
+                    ( char ) Student::Selecting,
                     machine->getId() );
 
     while ( true ) {
@@ -41,7 +41,7 @@ void Student::main() {
         machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *( mWatcard() ) );
         mPrinter.print( Printer::Student,
                         mId,
-                        (char)Buying,
+                        ( char ) Student::Buying,
                         mWatcard()->getBalance() );
         // Successful purchase        
         break;
@@ -55,12 +55,12 @@ void Student::main() {
       } catch ( WATCardOffice::Lost &ex ) {
         mPrinter.print( Printer::Student,
                         mId,
-                        (char)Lost );
+                        ( char ) Student::Lost );
 
         mWatcard = mOffice.create( mId, STARTING_BALANCE );
       }
     }
   }
 
-  mPrinter.print( Printer::Student, mId, (char)Finished );
+  mPrinter.print( Printer::Student, mId, ( char ) Student::Finished );
 }

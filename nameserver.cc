@@ -17,18 +17,18 @@ NameServer::NameServer( Printer & printer, unsigned int numVendingMachines, unsi
   mStudentIndex = 0;
   mRegisterIndex = 0;
 
-  mPrinter.print( Printer::NameServer, Starting );
+  mPrinter.print( Printer::NameServer, NameServer::Starting );
 }
 
 NameServer::~NameServer() {
-  mPrinter.print( Printer::NameServer, Finished );
+  mPrinter.print( Printer::NameServer, NameServer::Finished );
   delete[] mStudents;
   delete[] mMachines;
 }
 
 void NameServer::VMregister( VendingMachine *vendingMachine ) {
   mPrinter.print( Printer::NameServer,
-                  (char)Register,
+                  ( char ) NameServer::Register,
                   vendingMachine->getId() );
   mMachines[mVMIndex] = vendingMachine;
   mVMIndex += 1;
@@ -47,7 +47,7 @@ VendingMachine* NameServer::getMachine( unsigned int id ) {
   }
 
   mPrinter.print( Printer::NameServer,
-                  (char)New,
+                  ( char ) NameServer::New,
                   id,
                   mMachines[mStudents[id]]->getId() );
 

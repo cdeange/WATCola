@@ -14,7 +14,7 @@ WATCardOffice::WATCardOffice( Printer & printer, Bank & bank, unsigned int numCo
     mCouriers[i] = new Courier( i, *this, printer );
   }
 
-  mPrinter.print( Printer::WATCardOffice, Starting );
+  mPrinter.print( Printer::WATCardOffice, WATCardOffice::Starting );
 }
 
 WATCardOffice::~WATCardOffice() {
@@ -23,14 +23,14 @@ WATCardOffice::~WATCardOffice() {
   }
   delete[] mCouriers;
 
-  mPrinter.print( Printer::WATCardOffice, Finished );
+  mPrinter.print( Printer::WATCardOffice, WATCardOffice::Finished );
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
   Args args = { sid, amount, NULL };
   Job* job = new Job( args, mBank );
   mJobs.push( job );
-  mPrinter.print( Printer::WATCardOffice, (char)CreateWork, (int)sid, (int)amount );
+  mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::CreateWork, ( int ) sid, ( int ) amount );
   return job->mResult;
 }
 
@@ -38,7 +38,7 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
   Args args = { sid, amount, card };
   Job* job = new Job( args, mBank );
   mJobs.push( job );
-  mPrinter.print( Printer::WATCardOffice, (char)TransferWork, (int)sid, (int)amount );
+  mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::TransferWork, ( int ) sid, ( int ) amount );
   return job->mResult;
 }
 
@@ -50,7 +50,7 @@ WATCardOffice::Job* WATCardOffice::requestWork() {
   Job* job = mJobs.front();
   mJobs.pop();
 
-  mPrinter.print( Printer::WATCardOffice, RequestWork );
+  mPrinter.print( Printer::WATCardOffice, WATCardOffice::RequestWork );
   return job;
 }
 
@@ -70,7 +70,7 @@ void WATCardOffice::main() {
 
 WATCardOffice::Courier::Courier ( unsigned int id, WATCardOffice & office, Printer & printer ) 
     : mId ( id ), mOffice( office ), mPrinter( printer ) {
-  mPrinter.print( Printer::Courier, id, (char)Starting );
+  mPrinter.print( Printer::Courier, id, ( char ) Courier::Starting );
 }
 
 void WATCardOffice::Courier::main() {
@@ -84,7 +84,7 @@ void WATCardOffice::Courier::main() {
       if ( job == NULL ) break;
 
       Args args = job->mArgs;
-      mPrinter.print( Printer::Courier, mId, (char)StartTransfer, args.mSid, args.mAmount );
+      mPrinter.print( Printer::Courier, mId, ( char ) Courier::StartTransfer, args.mSid, args.mAmount );
 
       job->mBank.withdraw( args.mSid, args.mAmount );
       if ( args.mWatcard == NULL ) args.mWatcard = new WATCard;
@@ -100,11 +100,11 @@ void WATCardOffice::Courier::main() {
 
       delete job;
 
-      mPrinter.print( Printer::Courier, mId, (char)EndTransfer, args.mSid, args.mAmount );
+      mPrinter.print( Printer::Courier, mId, ( char ) Courier::EndTransfer, args.mSid, args.mAmount );
 
     }
   }
 
-  mPrinter.print( Printer::Courier, mId, (char)Finished );
+  mPrinter.print( Printer::Courier, mId, ( char ) Courier::Finished );
 
 }

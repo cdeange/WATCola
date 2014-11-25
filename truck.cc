@@ -13,11 +13,11 @@ Truck::Truck( Printer & prt,
   mMaxStockPerFlavour( maxStockPerFlavour ) {
 
   mStartVending = 0;
-  mPrinter.print( Printer::Truck, Start );
+  mPrinter.print( Printer::Truck, Truck::Start );
 }
 
 Truck::~Truck() {
-  mPrinter.print( Printer::Truck, Finished );
+  mPrinter.print( Printer::Truck, Truck::Finished );
 }
 
 bool Truck::hasCargo() {
@@ -44,12 +44,12 @@ void Truck::main() {
     for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
       total += mCargo[i];
     }
-    mPrinter.print(Printer::Truck, Pickup, total);
+    mPrinter.print(Printer::Truck, Truck::Pickup, total);
 
     for( unsigned  machine = 0; machine < mNumVending; machine++ ) {
 
       int machineId = ( mStartVending + machine ) % mNumVending;
-      mPrinter.print(Printer::Truck, Begin, machineId, total);
+      mPrinter.print(Printer::Truck, Truck::Begin, machineId, total);
 
       // We have no cargo left :( keep machineId and start again later
       if( !hasCargo() ) {
@@ -69,7 +69,7 @@ void Truck::main() {
         } else {
           given = mCargo[flavor];
           mPrinter.print( Printer::Truck, 
-                          Unsuccessful, 
+                          Truck::Unsuccessful, 
                           machineId, 
                           mMaxStockPerFlavour - given );
         }
@@ -79,7 +79,7 @@ void Truck::main() {
         mCargo[flavor] = mCargo[flavor] - given;
       }
       machineList[machineId]->restocked();
-      mPrinter.print(Printer::Truck, Delivery, machineId, total);
+      mPrinter.print(Printer::Truck, Truck::Delivery, machineId, total);
     }
   }
 }

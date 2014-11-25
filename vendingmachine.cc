@@ -21,11 +21,11 @@ VendingMachine::VendingMachine(
   }
 
   mNameServer.VMregister( this );
-  mPrinter.print( Printer::Vending, mId, (char)Starting, sodaCost );
+  mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Starting, sodaCost );
 }
 
 VendingMachine::~VendingMachine() {
-  mPrinter.print( Printer::Vending, Finished );
+  mPrinter.print( Printer::Vending, VendingMachine::Finished );
 }
 
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
@@ -41,7 +41,7 @@ void VendingMachine::buy( Flavours flavour, WATCard &card ) {
   card.withdraw( mCost );
   mInventory[flavour]--;
 
-  mPrinter.print( Printer::Vending, Buying, flavour, mInventory[flavour] );
+  mPrinter.print( Printer::Vending, VendingMachine::Buying, flavour, mInventory[flavour] );
 }
 
 unsigned int * VendingMachine::inventory() {
@@ -62,9 +62,9 @@ void VendingMachine::main() {
   
   while( true ) {
     _Accept( inventory ) {
-      mPrinter.print( Printer::Vending, StartReloading );
+      mPrinter.print( Printer::Vending, VendingMachine::StartReloading );
       _Accept( restocked ) {
-        mPrinter.print( Printer::Vending, EndReloading );
+        mPrinter.print( Printer::Vending, VendingMachine::EndReloading );
       }
 
     } or _Accept( buy ) {
