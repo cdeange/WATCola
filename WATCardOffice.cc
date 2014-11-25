@@ -18,6 +18,11 @@ WATCardOffice::WATCardOffice( Printer & printer, Bank & bank, unsigned int numCo
 }
 
 WATCardOffice::~WATCardOffice() {
+  mDone = true;
+  for ( unsigned int i = 0; i < mNumCouriers; ++i ) {
+    _Accept( requestWork );
+  }
+
   for ( unsigned int i = 0; i < mNumCouriers; ++i ) {
     delete mCouriers[i];
   }
@@ -45,8 +50,6 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 WATCardOffice::Job* WATCardOffice::requestWork() {
 
   if ( mDone ) return NULL;
-  while ( mJobs.empty() ) _Accept( create, transfer );
-
   Job* job = mJobs.front();
   mJobs.pop();
 
@@ -58,11 +61,9 @@ void WATCardOffice::main() {
 
   while ( true ) {
     _Accept( ~WATCardOffice ) {
-      mDone = true;
-      for ( unsigned int i = 0; i < mNumCouriers; ++i ) {
-        _Accept( requestWork );
-      }
       break;
+    } or _When ( !mJobs.empty() ) _Accept( requestWork ) {
+    } or _Accept( create, transfer ) {
     }
   }
 

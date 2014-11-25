@@ -14,7 +14,7 @@ Student::Student( Printer & printer,
                   unsigned int maxPurchases ) 
 : mPrinter( printer ), mNameServer( nameServer ), mOffice( office ), mId( id ) {
 
-  mPurchases = RAND( maxPurchases );
+  mPurchases = RAND( 1, maxPurchases );
   mFavouriteFlavour = RAND( VendingMachine::FlavoursCount );
   mPrinter.print( Printer::Student, 
                   id, 
