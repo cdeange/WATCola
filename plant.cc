@@ -21,7 +21,7 @@ BottlingPlant::BottlingPlant(
 
   mShutdown = false;
   mPrinter.print( Printer::BottlingPlant,
-                  BottlingPlant::Starting );
+                  Starting );
 
   mTruck = new Truck( mPrinter, 
                       mNameServer, 
@@ -34,33 +34,39 @@ BottlingPlant::~BottlingPlant() {
   delete mTruck;
   mTruck = NULL;
   mPrinter.print( Printer::BottlingPlant,
-                  BottlingPlant::Finished );
+                  Finished );
 }
 
 void BottlingPlant::getShipment( unsigned int cargo[] ) {
-  _Accept( ~BottlingPlant ) {
+  if( mShutdown ) {
     uRendezvousAcceptor();
-    mShutdown = true;
     throw Shutdown();
-  } _Else {
-    mPrinter.print( Printer::BottlingPlant,
-                    BottlingPlant::Pickup );
-    unsigned int total = 0;
-    for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
-      cargo[i] = RAND(mMaxShippedPerFlavour);
-      total += cargo[i];
-    }
-    mPrinter.print( Printer::BottlingPlant,
-                    ( char ) BottlingPlant::Generating,
-                    total );
   }
+    
+  mPrinter.print( Printer::BottlingPlant,
+                  Pickup );
+  unsigned int total = 0;
+
+  for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
+    cargo[i] = RAND(mMaxShippedPerFlavour);
+    total += cargo[i];
+  }
+
+  mPrinter.print( Printer::BottlingPlant,
+                  (char)Generating,
+                  total );
 }
 
 void BottlingPlant::main() {
   
   while( !mShutdown ) {
     yield(mTimeBetweenShipments);
-    _Accept( getShipment ) {}
+    _Accept( ~BottlingPlant ) {
+      mShutdown = true;
+      _Accept( getShipment ) {
+        return;
+      }
+    } or _Accept( getShipment ) {}
   }
 
 }

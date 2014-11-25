@@ -74,13 +74,13 @@ void uMain::main() {
             config.maxShippedPerFlavour, 
             config.maxStockPerFlavour, 
             config.timeBetweenShipments );
-
   // Student* students[config.numStudents];
   // for ( unsigned int i = 0; i < config.numStudents; ++i ) {
   //   students[i] = new Student( printer, nameServer, office, i, config.maxPurchases );
   // }
 
   delete plant;
+  
   for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
     delete machines[i];
   }

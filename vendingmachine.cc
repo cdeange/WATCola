@@ -25,7 +25,7 @@ VendingMachine::VendingMachine(
 }
 
 VendingMachine::~VendingMachine() {
-  mPrinter.print( Printer::Vending, VendingMachine::Finished );
+  mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Finished );
 }
 
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
