@@ -28,16 +28,19 @@ void usage( char *argv[] ) {
 void uMain::main() {
   ConfigParams config;
   int seed = getpid();
+  const char* filename = "soda.config";
+
   switch ( argc ) {
     case 3:
       if ( !convert( seed, argv[2] ) || seed < 0 ) usage( argv );
     case 2:
-      processConfigFile( argv[1], config );
+      filename = argv[1];
     case 1:  
       break;
     default:            // wrong number of options
       usage( argv );
   } // switch
+  processConfigFile( filename, config );
 
   srand(seed);
 
