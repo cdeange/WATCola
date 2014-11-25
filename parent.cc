@@ -13,11 +13,11 @@ Parent::Parent( Printer & prt,
     mBank(bank), 
     mNumStudents(numStudents), 
     mDelay(parentalDelay) {
-  mPrinter.print( Printer::Parent, Start );
+  mPrinter.print( Printer::Parent, Parent::Starting );
 }
 
 Parent::~Parent() {
-  mPrinter.print( Printer::Parent, Finished );
+  mPrinter.print( Printer::Parent, Parent::Finished );
 }
 
 void Parent::main() {
@@ -28,7 +28,7 @@ void Parent::main() {
       unsigned int money = RAND(1, 3);
       unsigned int studentId = RAND(mNumStudents - 1);
       yield(mDelay);
-      mPrinter.print( Printer::Parent, (char) Deposit, studentId, money );
+      mPrinter.print( Printer::Parent, (char) Parent::Deposit, studentId, money );
       mBank.deposit( studentId, money );  
     }
   }

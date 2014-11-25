@@ -1,5 +1,8 @@
 #include "truck.h"
 #include "MPRNG.h"
+#include <iostream>
+
+using namespace std;
 
 Truck::Truck( Printer & prt, 
               NameServer & nameServer, 
@@ -13,11 +16,11 @@ Truck::Truck( Printer & prt,
   mMaxStockPerFlavour( maxStockPerFlavour ) {
 
   mStartVending = 0;
-  mPrinter.print( Printer::Truck, Start );
+  mPrinter.print( Printer::Truck, (char)Starting );
 }
 
 Truck::~Truck() {
-  mPrinter.print( Printer::Truck, Finished );
+  mPrinter.print( Printer::Truck, (char)Finished );
 }
 
 bool Truck::hasCargo() {

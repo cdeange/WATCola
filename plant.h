@@ -4,6 +4,8 @@
 #include "nameserver.h"
 #include "printer.h"
 
+_Task Truck;
+
 _Task BottlingPlant {
   public:
     _Event Shutdown {};                    // shutdown plant
@@ -30,6 +32,8 @@ _Task BottlingPlant {
     unsigned int mMaxStockPerFlavour;
     unsigned int mTimeBetweenShipments;
     bool mShutdown;
+
+    Truck * mTruck;
 };
 
 #endif
