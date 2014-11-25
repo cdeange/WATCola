@@ -32,31 +32,32 @@ _Monitor / _Cormonitor Printer {
     vector<PrintInfo> mPrintList;
 
   private:
-    void printIfFlush( int index, PrintInfo & replaceInfo );
-    struct TwoInfo {
-      int mFirst;
-      int mSecond;
-    };
-
-    struct OneInfo {
-      int mFirst;
-    };
+    void printIfFlush( unsigned int index, PrintInfo & replaceInfo );
+    void printLineAndFlushBuffer();
+    void printFinishLine( unsigned int index );
+    unsigned int getPrintIndex( Kind kind, unsigned int id = 0 );
 
     union PrintData {
-      TwoInfo mTwo;
-      OneInfo mOne;
+      int mNumData;
+      int mFirst;
+      int mSecond;
+
+      PrintData();
     };
 
     struct PrintInfo {
       Kind mKind
       char mState;
       PrintData mData;
+      bool mHasData;
 
       PrintInfo();
       PrintInfo( Kind & );
       PrintInfo( Kind &, char, PrintData & );
 
     };
+
+
 };
 
 #endif
