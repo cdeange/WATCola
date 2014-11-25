@@ -35,7 +35,7 @@ void Truck::main() {
 
     try {
       mPlant.getShipment( mCargo );  
-    } _CatchResume( BottlingPlant::Shutdown shutdown ) {
+    } catch ( BottlingPlant::Shutdown & shutdown ) {
       return;
     }
 
