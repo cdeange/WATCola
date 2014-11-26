@@ -39,7 +39,7 @@ VendingMachine* NameServer::getMachine( unsigned int id ) {
   if ( mStudents[id] == -1 ) {
     // Student has not been registered a VendingMachine yet
     mStudents[id] = mRegisterIndex;
-    mRegisterIndex = ( mRegisterIndex + 1 ) % mNumStudents;
+    mRegisterIndex = ( mRegisterIndex + 1 ) % mNumVendingMachines;
 
   } else {
     // Student should get the next VendingMachine

@@ -12,6 +12,7 @@
 _Task WATCardOffice {
 
     struct Args {
+      Args( int sid, int amount, WATCard * watcard ) : mSid( sid ), mAmount( amount ), mWatcard( watcard ) {}
       unsigned int mSid;
       unsigned int mAmount;
       WATCard * mWatcard;

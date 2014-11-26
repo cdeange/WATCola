@@ -30,14 +30,13 @@ VendingMachine::~VendingMachine() {
 
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
   unsigned int balance = card.getBalance();
-  // This might break since the main might not start up as a result
-  // TODO test
-  if( balance < mCost ) {
+
+  if ( balance < mCost ) {
     uRendezvousAcceptor();
-    throw Funds();
+    _Throw Funds();
   } else if ( mInventory[flavour] <= 0 ) {
     uRendezvousAcceptor();
-    throw Stock();
+    _Throw Stock();
   }
 
   card.withdraw( mCost );

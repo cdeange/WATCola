@@ -32,16 +32,14 @@ WATCardOffice::~WATCardOffice() {
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
-  Args args = { sid, amount, NULL };
-  Job* job = new Job( args, mBank );
+  Job* job = new Job( Args( sid, amount, NULL ), mBank );
   mJobs.push( job );
   mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::CreateWork, ( int ) sid, ( int ) amount );
   return job->mResult;
 }
 
 WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard *card ) {
-  Args args = { sid, amount, card };
-  Job* job = new Job( args, mBank );
+  Job* job = new Job( Args( sid, amount, card ), mBank );
   mJobs.push( job );
   mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::TransferWork, ( int ) sid, ( int ) amount );
   return job->mResult;

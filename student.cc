@@ -15,7 +15,7 @@ Student::Student( Printer & printer,
 : mPrinter( printer ), mNameServer( nameServer ), mOffice( office ), mId( id ) {
 
   mPurchases = RAND( 1, maxPurchases );
-  mFavouriteFlavour = RAND( VendingMachine::FlavoursCount );
+  mFavouriteFlavour = RAND( VendingMachine::FlavoursCount - 1 );
   mPrinter.print( Printer::Student, 
                   id, 
                   Student::Starting,
@@ -38,11 +38,12 @@ void Student::main() {
 
     while ( true ) {
       try {
-        machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *( mWatcard() ) );
+        WATCard* card = mWatcard();
+        machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *card );
         mPrinter.print( Printer::Student,
                         mId,
                         ( char ) Student::Buying,
-                        mWatcard()->getBalance() );
+                        card->getBalance() );
         // Successful purchase        
         break;
 
