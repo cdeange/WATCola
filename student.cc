@@ -52,6 +52,10 @@ void Student::main() {
 
       } catch ( VendingMachine::Stock &ex ) {
         machine = mNameServer.getMachine( mId );
+        mPrinter.print( Printer::Student,
+                        mId,
+                        ( char ) Student::Selecting,
+                        machine->getId() );
 
       } catch ( WATCardOffice::Lost &ex ) {
         mPrinter.print( Printer::Student,

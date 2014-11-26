@@ -20,7 +20,6 @@ VendingMachine::VendingMachine(
     mInventory[i] = 0;
   }
 
-  mNameServer.VMregister( this );
   mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Starting, sodaCost );
 }
 
@@ -29,11 +28,13 @@ VendingMachine::~VendingMachine() {
 }
 
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
+
   unsigned int balance = card.getBalance();
 
   if ( balance < mCost ) {
     uRendezvousAcceptor();
     _Throw Funds();
+
   } else if ( mInventory[flavour] <= 0 ) {
     uRendezvousAcceptor();
     _Throw Stock();
@@ -60,6 +61,8 @@ unsigned int VendingMachine::getId() {
 }
 
 void VendingMachine::main() {
+
+  mNameServer.VMregister( this );
   
   while( true ) {
     _Accept( inventory ) {

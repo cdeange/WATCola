@@ -31,8 +31,10 @@ bool Truck::hasCargo() {
 }
 
 void Truck::main() {
+
+  VendingMachine ** machineList = mNameServer.getMachineList();
+
   while( true ) {
-    VendingMachine ** machineList = mNameServer.getMachineList();
     unsigned int yieldNum = RAND(1, 10);
     yield(yieldNum);
 
@@ -62,25 +64,33 @@ void Truck::main() {
 
       // We have cargo to give out to this machine! :D
       unsigned int * machineInventory = machineList[machineId]->inventory();
+      unsigned int unstocked = 0;
 
       for( int flavor = 0; flavor < VendingMachine::FlavoursCount; flavor++ ) {
-        unsigned int addedInventory = machineInventory[flavor] + mCargo[flavor];
         int given;
-        
-        if( addedInventory >= mMaxStockPerFlavour ) {
-          given = ( mMaxStockPerFlavour - machineInventory[flavor] );
-        } else {
+
+        if( mMaxStockPerFlavour > machineInventory[flavor] + mCargo[flavor] ) {
+          // Cannot fully restock this flavour
+          unstocked += ( mMaxStockPerFlavour - mCargo[flavor] );
           given = mCargo[flavor];
-          mPrinter.print( Printer::Truck, 
-                          Truck::Unsuccessful, 
-                          machineId, 
-                          mMaxStockPerFlavour - given );
+
+        } else {
+          // We have enough!
+          given = ( mMaxStockPerFlavour - machineInventory[flavor] );
         }
 
-        total = total - given;
+        total -= given;
         machineInventory[flavor] += given;
-        mCargo[flavor] = mCargo[flavor] - given;
+        mCargo[flavor] -= given;
       }
+
+      if ( unstocked != 0 ) {
+        mPrinter.print( Printer::Truck, 
+                        Truck::Unsuccessful, 
+                        machineId, 
+                        unstocked );
+      }
+
       machineList[machineId]->restocked();
       mPrinter.print(Printer::Truck, Truck::Delivery, machineId, total);
     }

@@ -16,6 +16,8 @@ _Task BottlingPlant {
     void getShipment( unsigned int cargo[] );
 
   private:
+
+    void createProductionRun();
     void main();
     
     enum State {
@@ -32,8 +34,10 @@ _Task BottlingPlant {
     unsigned int mMaxStockPerFlavour;
     unsigned int mTimeBetweenShipments;
     bool mShutdown;
+    int mStock[VendingMachine::FlavoursCount];
 
     Truck * mTruck;
+
 };
 
 #endif
