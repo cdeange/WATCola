@@ -34,8 +34,8 @@ _Monitor Printer {
       int mSecond;
 
       PrintData();
-      PrintData( int );
-      PrintData( int, int );
+      PrintData( int first );
+      PrintData( int first, int second );
     };
 
     struct PrintInfo {
@@ -45,8 +45,8 @@ _Monitor Printer {
       bool mHasData;
 
       PrintInfo();
-      PrintInfo( Kind );
-      PrintInfo( Kind , char, PrintData & );
+      PrintInfo( Kind kind);
+      PrintInfo( Kind kind, char state, PrintData & data );
     };
 
   private:

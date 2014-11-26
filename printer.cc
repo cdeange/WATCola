@@ -154,27 +154,32 @@ unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {
 }
 
 void Printer::printIfFlush( unsigned int index, PrintInfo & replaceInfo ) {
-  if( mPrintList[index].mHasData ) {
-    printLineAndFlushBuffer();
-  }
-
-  mPrintList[index] = replaceInfo;
-  mPrintList[index].mHasData = true;
 
   if ( replaceInfo.mState == 'F' ) {
     printFinishLine( index );
+
+  } else {
+    if( mPrintList[index].mHasData ) {
+      printLineAndFlushBuffer();
+    }
+
+    mPrintList[index] = replaceInfo;
+    mPrintList[index].mHasData = true;
   }
 }
 
 void Printer::printLineAndFlushBuffer() {
 
   // That thing where you don't print anything else after the last element
-  unsigned int lastPrintIndex = 0;
+  int lastPrintIndex = -1;
   for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
-    if( mPrintList[i].mHasData ) lastPrintIndex = i;
+    if( mPrintList[i].mHasData ) lastPrintIndex = ( int ) i;
   }
 
-  for( unsigned int i = 0; i <= lastPrintIndex; i++ ) {
+  // Return early if nothing to print
+  if ( lastPrintIndex == -1 ) return;
+
+  for( int i = 0; i <= lastPrintIndex; i++ ) {
     if( mPrintList[i].mHasData ) {
       cout << mPrintList[i].mState;
       switch( mPrintList[i].mData.mNumData ) {
@@ -190,18 +195,19 @@ void Printer::printLineAndFlushBuffer() {
         default:
           cerr << "ERROR: number of data points is wrong" << endl;
       }
+
+      mPrintList[i].mHasData = false;
     }
-    
-    mPrintList[i].mHasData = false;
 
     if( i != lastPrintIndex ) cout << "\t";
   }
 
   cout << endl;
-
 }
 
 void Printer::printFinishLine( unsigned int index ) {
+
+  printLineAndFlushBuffer();
 
   for( unsigned int i = 0; i < mPrintList.size(); i++ ) {
     if( i == index ) {
@@ -214,7 +220,5 @@ void Printer::printFinishLine( unsigned int index ) {
   }
 
   cout << endl;
-
 }
-
 
