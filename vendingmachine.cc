@@ -20,6 +20,8 @@ VendingMachine::VendingMachine(
     mInventory[i] = 0;
   }
 
+  mNameServer.VMregister( this );
+
   mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Starting, sodaCost );
 }
 
@@ -61,8 +63,6 @@ unsigned int VendingMachine::getId() {
 }
 
 void VendingMachine::main() {
-
-  mNameServer.VMregister( this );
   
   while( true ) {
     _Accept( inventory ) {
