@@ -11,21 +11,15 @@
 
 _Task WATCardOffice {
 
-    struct Args {
-      Args( int sid, int amount, WATCard * watcard ) : mSid( sid ), mAmount( amount ), mWatcard( watcard ) {}
+    struct Job {
       unsigned int mSid;
       unsigned int mAmount;
       WATCard * mWatcard;
+      Bank & mBank;
+      WATCard::FWATCard mResult;
+        Job( int sid, int amount, WATCard * watcard, Bank & bank )
+            : mSid( sid ), mAmount( amount ), mWatcard( watcard ), mBank( bank ) {}
     };
-
-    struct Job {
-        Args mArgs;
-        Bank & mBank;
-        WATCard::FWATCard mResult;
-        Job( Args args, Bank & bank ) : mArgs( args ), mBank( bank ) {}
-    };
-
-  public:
 
     _Task Courier {
       enum State {
@@ -51,7 +45,7 @@ _Task WATCardOffice {
     bool mDone;
 
     Courier** mCouriers;
-    std::queue<Job*> mJobs;
+    Job * mJob;
 
     void main();
 
