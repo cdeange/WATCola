@@ -16,14 +16,15 @@ Student::Student( Printer & printer,
 
   mPurchases = RAND( 1, maxPurchases );
   mFavouriteFlavour = RAND( VendingMachine::FlavoursCount - 1 );
-  mPrinter.print( Printer::Student, 
-                  id, 
-                  Student::Starting,
-                  mFavouriteFlavour,
-                  mPurchases );
 }
 
 void Student::main() {
+
+  mPrinter.print( Printer::Student, 
+                  mId, 
+                  Student::Starting,
+                  mFavouriteFlavour,
+                  mPurchases );
 
   mWatcard = mOffice.create( mId, STARTING_BALANCE );
 

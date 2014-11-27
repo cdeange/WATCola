@@ -23,12 +23,6 @@ BottlingPlant::BottlingPlant(
   for ( unsigned int i = 0; i < VendingMachine::FlavoursCount; ++i ) {
     mStock[i] = 0;
   }
-
-  mTruck = new Truck( mPrinter, 
-                      mNameServer, 
-                      (*this),
-                      mNumVendingMachines,
-                      mMaxStockPerFlavour );
 }
 
 BottlingPlant::~BottlingPlant() {
@@ -66,6 +60,12 @@ void BottlingPlant::main() {
 
   mPrinter.print( Printer::BottlingPlant, BottlingPlant::Starting );
 
+  mTruck = new Truck( mPrinter, 
+                      mNameServer, 
+                      (*this),
+                      mNumVendingMachines,
+                      mMaxStockPerFlavour );
+  
   createProductionRun();
   
   while( true ) {

@@ -22,11 +22,9 @@ VendingMachine::VendingMachine(
 
   mNameServer.VMregister( this );
 
-  mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Starting, sodaCost );
 }
 
 VendingMachine::~VendingMachine() {
-  mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Finished );
 }
 
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
@@ -53,7 +51,6 @@ unsigned int * VendingMachine::inventory() {
 }
 
 void VendingMachine::restocked() {}
-
 unsigned int VendingMachine::cost() {
   return mCost;
 }
@@ -63,7 +60,8 @@ unsigned int VendingMachine::getId() {
 }
 
 void VendingMachine::main() {
-  
+  mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Starting, mCost );
+
   while( true ) {
     _Accept( inventory ) {
       mPrinter.print( Printer::Vending, VendingMachine::StartReloading );
@@ -77,4 +75,6 @@ void VendingMachine::main() {
       return;
     }
   }
+
+  mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Finished );
 }
