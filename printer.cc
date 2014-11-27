@@ -36,11 +36,11 @@ Printer::Printer( unsigned int numStudents,
                   unsigned int numVendingMachines,
                   unsigned int numCouriers ) {
 
-  cout << "Parent \t";
-  cout << "WATOff \t";
-  cout << "Names \t";
-  cout << "Truck \t";
-  cout << "Plant \t";
+  cout << "Parent\t";
+  cout << "WATOff\t";
+  cout << "Names\t";
+  cout << "Truck\t";
+  cout << "Plant\t";
   mPrintList.push_back( PrintInfo( Parent ) );
   mPrintList.push_back( PrintInfo( WATCardOffice ) );
   mPrintList.push_back( PrintInfo( NameServer ) );
