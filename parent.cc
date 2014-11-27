@@ -13,17 +13,16 @@ Parent::Parent( Printer & prt,
     mBank(bank), 
     mNumStudents(numStudents), 
     mDelay(parentalDelay) {
-  mPrinter.print( Printer::Parent, Parent::Starting );
-}
-
-Parent::~Parent() {
-  mPrinter.print( Printer::Parent, Parent::Finished );
 }
 
 void Parent::main() {
+
+  mPrinter.print( Printer::Parent, Parent::Starting );
+
   while( true ) {
     _Accept( ~Parent ) { 
-      return; 
+      break;
+
     } _Else {
       unsigned int money = RAND(1, 3);
       unsigned int studentId = RAND(mNumStudents - 1);
@@ -32,4 +31,7 @@ void Parent::main() {
       mBank.deposit( studentId, money );  
     }
   }
+
+  mPrinter.print( Printer::Parent, Parent::Finished );
+
 }

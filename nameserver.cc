@@ -16,12 +16,9 @@ NameServer::NameServer( Printer & printer, unsigned int numVendingMachines, unsi
   mVMIndex = 0;
   mStudentIndex = 0;
   mRegisterIndex = 0;
-
-  mPrinter.print( Printer::NameServer, NameServer::Starting );
 }
 
 NameServer::~NameServer() {
-  mPrinter.print( Printer::NameServer, NameServer::Finished );
   delete[] mStudents;
   delete[] mMachines;
 }
@@ -59,6 +56,9 @@ VendingMachine** NameServer::getMachineList() {
 }
 
 void NameServer::main() {
+
+  mPrinter.print( Printer::NameServer, NameServer::Starting );
+
   while ( true ) {
     _Accept( ~NameServer ) { 
       break;
@@ -66,4 +66,6 @@ void NameServer::main() {
     } or _When( mVMIndex == mNumVendingMachines ) _Accept( getMachine, getMachineList ) {
     }
   }
+
+  mPrinter.print( Printer::NameServer, NameServer::Finished );
 }

@@ -24,9 +24,6 @@ BottlingPlant::BottlingPlant(
     mStock[i] = 0;
   }
 
-  mPrinter.print( Printer::BottlingPlant,
-                  BottlingPlant::Starting );
-
   mTruck = new Truck( mPrinter, 
                       mNameServer, 
                       (*this),
@@ -36,9 +33,6 @@ BottlingPlant::BottlingPlant(
 
 BottlingPlant::~BottlingPlant() {
   delete mTruck;
-  mTruck = NULL;
-  mPrinter.print( Printer::BottlingPlant,
-                  BottlingPlant::Finished );
 }
 
 void BottlingPlant::getShipment( unsigned int cargo[] ) {
@@ -70,18 +64,22 @@ void BottlingPlant::createProductionRun() {
 
 void BottlingPlant::main() {
 
+  mPrinter.print( Printer::BottlingPlant, BottlingPlant::Starting );
+
   createProductionRun();
   
   while( true ) {
     _Accept( ~BottlingPlant ) {
       mShutdown = true;
       _Accept( getShipment ) {
-        return;
+        break;
       }
     } or _Accept( getShipment ) {
       yield(mTimeBetweenShipments);
       createProductionRun();
     }
   }
+
+  mPrinter.print( Printer::BottlingPlant, BottlingPlant::Finished );
 
 }

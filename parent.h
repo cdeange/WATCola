@@ -7,7 +7,6 @@
 _Task Parent {
   public:
     Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
-    ~Parent();
     enum State {
       Starting = 'S', 
       Deposit  = 'D', 
