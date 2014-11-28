@@ -10,7 +10,7 @@ class WATCard {
     unsigned int mBalance;
   public:
     WATCard();
-    typedef Future_ISM<WATCard*> FWATCard; // future watcard pointer
+    typedef Future_ISM<WATCard *> FWATCard; // future watcard pointer
     void deposit( unsigned int amount );
     void withdraw( unsigned int amount );
     unsigned int getBalance();
