@@ -113,7 +113,7 @@ void VendingMachine::main() {
       mLock.signalBlock();
 
     } or _Accept( ~VendingMachine ) {
-      return;
+      break;
     }
   }
 
