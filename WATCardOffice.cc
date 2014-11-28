@@ -34,6 +34,8 @@ WATCardOffice::~WATCardOffice() {
     mCouriers[i] = NULL;
   }
 
+  mPrinter.print( Printer::WATCardOffice, WATCardOffice::Finished );
+
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
@@ -69,8 +71,6 @@ void WATCardOffice::main() {
     } or _Accept( create, transfer ) {
     }
   }
-
-  mPrinter.print( Printer::WATCardOffice, WATCardOffice::Finished );
 }
 
 WATCardOffice::Courier::Courier ( unsigned int id, WATCardOffice & office, Printer & printer, Bank & bank ) 
