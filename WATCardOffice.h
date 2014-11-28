@@ -9,8 +9,6 @@
 #include "printer.h"
 #include "WATCard.h"
 
-#define LOSE_CARD_CHANCE 6
-
 _Task WATCardOffice {
 
     enum WorkType {
@@ -43,6 +41,8 @@ _Task WATCardOffice {
           EndTransfer   = 'T', 
           Finished      = 'F'
         };
+
+        static const unsigned int LOSE_CARD_CHANCE = 6;
 
         unsigned int mId;
         WATCardOffice & mOffice;

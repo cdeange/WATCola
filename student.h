@@ -6,8 +6,6 @@
 #include "WATCard.h"
 #include "WATCardOffice.h"
 
-#define STARTING_BALANCE 5
-
 _Task Student {
 
     enum State {
@@ -17,6 +15,8 @@ _Task Student {
       Lost      = 'L', 
       Finished  = 'F'
     };
+
+    static const unsigned int STARTING_BALANCE = 5;
 
     Printer & mPrinter;
     NameServer & mNameServer;
