@@ -24,20 +24,17 @@ _Task WATCardOffice {
       Args( WorkType type,
             unsigned int sid,
             unsigned int amount,
-            WATCard * card,
-            Bank * bank) {
+            WATCard * card ) {
         mType = type;
         mSid = sid;
         mAmount = amount;
         mCard = card;
-        mBank = bank;
       }
 
       WorkType mType;
       unsigned int mSid;
       unsigned int mAmount;
       WATCard * mCard;
-      Bank * mBank;
     };
 
     struct Job {
@@ -58,11 +55,12 @@ _Task WATCardOffice {
         WATCardOffice & mOffice;
         Printer & mPrinter;
         vector<WATCard* > mDeleteCards;
+        Bank & mBank;
 
         void main();
 
       public:
-        Courier ( unsigned int id, WATCardOffice & office, Printer & printer );
+        Courier ( unsigned int id, WATCardOffice & office, Printer & printer, Bank & bank );
         ~Courier();
     };                 // communicates with bank
 
