@@ -5,6 +5,8 @@
 #include "MPRNG.h"
 #include "WATCardOffice.h"
 
+#include <iostream>
+
 using namespace std;
 
 Student::Student( Printer & printer, 
@@ -18,6 +20,34 @@ Student::Student( Printer & printer,
   mFavouriteFlavour = RAND( VendingMachine::FlavoursCount - 1 );
 }
 
+WATCard * Student::getWATCard( unsigned int balance, WATCard * card ) {
+
+  WATCard * newCard = NULL;
+  WATCard::FWATCard watcard;
+
+  while ( true ) {
+
+    try {
+
+      if ( card == NULL ) {
+        watcard = mOffice.create( mId, balance );
+      } else {
+        watcard = mOffice.transfer( mId, balance, card );
+      }
+
+      newCard = watcard();
+      // Card was not lost!
+      return newCard;
+
+    } catch ( WATCardOffice::Lost &ex ) {
+      delete newCard;
+      mPrinter.print( Printer::Student,
+                      mId,
+                      ( char ) Student::Lost );
+    }
+  }
+}
+
 void Student::main() {
 
   mPrinter.print( Printer::Student, 
@@ -26,10 +56,11 @@ void Student::main() {
                   mFavouriteFlavour,
                   mPurchases );
 
-  WATCard::FWATCard watcard = mOffice.create( mId, STARTING_BALANCE );
+  bool refillNeeded = false;
+  unsigned int refillBalance = STARTING_BALANCE;
+  WATCard* card = NULL;
 
   for ( unsigned int i = 0; i < mPurchases; ++i ) {
-    yield( RAND( 1, 10 ) );
 
     VendingMachine *machine = mNameServer.getMachine( mId );
     mPrinter.print( Printer::Student,
@@ -39,10 +70,17 @@ void Student::main() {
 
     while ( true ) {
 
-      WATCard* card = NULL;
+      yield( RAND( 1, 10 ) );
+
+      if ( card == NULL ) {
+        card = getWATCard( refillBalance, NULL );
+      } else if ( refillNeeded ) {
+        card = getWATCard( refillBalance, card );
+        refillNeeded = false;
+      }
 
       try {
-        card = watcard();
+
         machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *card );
         mPrinter.print( Printer::Student,
                         mId,
@@ -52,7 +90,9 @@ void Student::main() {
         break;
 
       } catch ( VendingMachine::Funds &ex ) {
-        watcard = mOffice.transfer( mId, STARTING_BALANCE + machine->cost(), card );
+        // cout << mId << "'s FUNDS card is " << card << endl;
+        refillBalance = STARTING_BALANCE + machine->cost();
+        refillNeeded = true;
 
       } catch ( VendingMachine::Stock &ex ) {
         machine = mNameServer.getMachine( mId );
@@ -60,18 +100,13 @@ void Student::main() {
                         mId,
                         ( char ) Student::Selecting,
                         machine->getId() );
-
-      } catch ( WATCardOffice::Lost &ex ) {
-        mPrinter.print( Printer::Student,
-                        mId,
-                        ( char ) Student::Lost );
-
-        watcard = mOffice.create( mId, STARTING_BALANCE );
       }
+
     }
   }
 
   mPrinter.print( Printer::Student, mId, ( char ) Student::Finished );
 
-  delete watcard;
+  delete card;
+
 }

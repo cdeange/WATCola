@@ -17,7 +17,7 @@ _Task WATCardOffice {
       WATCard * mWatcard;
       Bank & mBank;
       WATCard::FWATCard mResult;
-        Job( int sid, int amount, WATCard * watcard, Bank & bank )
+        Job( unsigned int sid, unsigned int amount, WATCard * watcard, Bank & bank )
             : mSid( sid ), mAmount( amount ), mWatcard( watcard ), mBank( bank ) {}
     };
 
@@ -45,7 +45,9 @@ _Task WATCardOffice {
     bool mDone;
 
     Courier** mCouriers;
-    std::queue<Job *> mJobs;
+    // std::queue<Job *> mJobs;
+    Job * mJob;
+    bool mAcceptingJob;
 
     void main();
 
