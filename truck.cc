@@ -53,16 +53,12 @@ void Truck::main() {
 
     for( unsigned  machine = 0; machine < mNumVending; machine++ ) {
 
+
       int machineId = ( mStartVending + machine ) % mNumVending;
       mPrinter.print(Printer::Truck, Truck::Begin, machineId, total);
 
-      // We have no cargo left :( keep machineId and start again later
-      if( !hasCargo() ) {
-        mStartVending = machineId;
-        break;
-      }
-
       // We have cargo to give out to this machine! :D
+
       unsigned int * machineInventory = machineList[machineId]->inventory();
       unsigned int unstocked = 0;
 
@@ -92,6 +88,12 @@ void Truck::main() {
       }
 
       machineList[machineId]->restocked();
+      // We have no cargo left :( keep machineId and start again later
+      if( !hasCargo() ) {
+
+        mStartVending = ( machineId + 1 ) % mNumVending;
+        break;
+      }
       mPrinter.print(Printer::Truck, Truck::Delivery, machineId, total);
     }
   }
