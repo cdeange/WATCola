@@ -2,6 +2,7 @@
 #define VENDING_MACHINE_H_
 
 #include <uFuture.h>
+#include <utility>
 
 #include "printer.h"
 #include "WATCard.h"
@@ -31,6 +32,13 @@ _Task VendingMachine {
     _Nomutex unsigned int getId();
 
   private:
+
+    enum PurchaseResult {
+      Success = 0,
+      Stock_Missing = 1,
+      Funds_Missing = 2
+    };
+
     enum State {
       Starting       = 'S', 
       StartReloading = 'r', 
@@ -40,6 +48,10 @@ _Task VendingMachine {
     };
 
     void main();
+
+    std::pair<Flavours, WATCard *> mPurchase;
+    uCondition mLock;
+    PurchaseResult mPurchaseResult;
 
     Printer & mPrinter;
     NameServer & mNameServer;
