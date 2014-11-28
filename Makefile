@@ -1,5 +1,5 @@
 CXX = u++
-CXXFLAGS = -g -Wall -Wno-unused-label -MMD
+CXXFLAGS = -g -Wall -Wno-unused-label -MMD -std=c++0x
 MAKEFILE_NAME = ${firstword ${MAKEFILE_LIST}}
 
 OBJECTS = 	main.o \
