@@ -30,7 +30,6 @@ void Student::main() {
   WATCard::FWATCard watcard = mOffice.create( mId, STARTING_BALANCE );
 
   for ( unsigned int i = 0; i < mPurchases; ++i ) {
-    yield( RAND( 1, 10 ) );
 
     VendingMachine *machine = mNameServer.getMachine( mId );
     mPrinter.print( Printer::Student,
@@ -42,8 +41,23 @@ void Student::main() {
 
       WATCard* card = NULL;
 
+      yield( RAND( 1, 10 ) );
+
+      while ( true ) {
+        try {
+          card = watcard();
+          // Card not lost, attempt to buy beverage
+          break;
+
+        } catch ( WATCardOffice::Lost &ex ) {
+          mPrinter.print( Printer::Student,
+                          mId,
+                          ( char ) Student::Lost );
+          watcard = mOffice.create( mId, STARTING_BALANCE );
+        } 
+      }
+
       try {
-        card = watcard();
         machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *card );
         mPrinter.print( Printer::Student,
                         mId,
@@ -62,12 +76,6 @@ void Student::main() {
                         ( char ) Student::Selecting,
                         machine->getId() );
 
-      } catch ( WATCardOffice::Lost &ex ) {
-        mPrinter.print( Printer::Student,
-                        mId,
-                        ( char ) Student::Lost );
-
-        watcard = mOffice.create( mId, STARTING_BALANCE );
       }
     }
   }

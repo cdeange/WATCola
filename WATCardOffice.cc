@@ -107,13 +107,13 @@ void WATCardOffice::Courier::main() {
     }
 
     mPrinter.print( Printer::Courier, mId, ( char ) Courier::StartTransfer, job->mArgs.mSid, job->mArgs.mAmount );
-
+    job->mArgs.mBank->withdraw( job->mArgs.mSid, job->mArgs.mAmount );
+    job->mArgs.mCard->deposit( job->mArgs.mAmount );
+    
     if( RAND(1, 6) == 1 ) {
       // delete job->mArgs.mCard;
       job->mResult.exception( new Lost );
     } else {
-      job->mArgs.mBank->withdraw( job->mArgs.mSid, job->mArgs.mAmount );
-      job->mArgs.mCard->deposit( job->mArgs.mAmount );
       job->mResult.delivery( job->mArgs.mCard );
     }
     mPrinter.print( Printer::Courier, mId, ( char ) Courier::EndTransfer, job->mArgs.mSid, job->mArgs.mAmount );
