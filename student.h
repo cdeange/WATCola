@@ -26,8 +26,6 @@ _Task Student {
     unsigned int mPurchases;
     unsigned int mFavouriteFlavour;
 
-    WATCard * getWATCard( unsigned int balance, WATCard * card );
-
     void main();
 
   public:

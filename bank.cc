@@ -2,17 +2,10 @@
 
 using namespace std;
 
-Bank::Bank( unsigned int numStudents ) {
-  mBalances = new unsigned int[numStudents] ;
-  for ( unsigned int i = 0; i < numStudents; ++i ) {
-    mBalances[i] = 0;
-  }
-  mLocks = new uCondition[numStudents];
+Bank::Bank( unsigned int numStudents ) : mBalances( numStudents, 0 ), mLocks( numStudents ) {
 }
 
 Bank::~Bank() {
-  delete[] mBalances;
-  delete[] mLocks;
 }
 
 void Bank::deposit( unsigned int id, unsigned int amount ) {

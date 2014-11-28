@@ -11,8 +11,8 @@ _Monitor Bank {
     void withdraw( unsigned int id, unsigned int amount );
 
   private:
-    unsigned int* mBalances;
-    uCondition* mLocks;
+    std::vector<unsigned int> mBalances;
+    std::vector<uCondition> mLocks;
 };
 
 #endif

@@ -107,6 +107,4 @@ void Student::main() {
 
   mPrinter.print( Printer::Student, mId, ( char ) Student::Finished );
 
-  delete card;
-
 }

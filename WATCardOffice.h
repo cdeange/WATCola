@@ -11,14 +11,19 @@
 
 _Task WATCardOffice {
 
-    struct Job {
+    struct Args {
       unsigned int mSid;
       unsigned int mAmount;
       WATCard * mWatcard;
-      Bank & mBank;
+      Args( unsigned int sid, unsigned int amount, WATCard * watcard )
+            : mSid( sid ), mAmount( amount ), mWatcard( watcard ) {}
+    };
+
+    struct Job {
+      Args mArgs;
       WATCard::FWATCard mResult;
-        Job( unsigned int sid, unsigned int amount, WATCard * watcard, Bank & bank )
-            : mSid( sid ), mAmount( amount ), mWatcard( watcard ), mBank( bank ) {}
+        Job( unsigned int sid, unsigned int amount, WATCard * watcard )
+            : mArgs( sid, amount, watcard ) {}
     };
 
     _Task Courier {
@@ -32,11 +37,12 @@ _Task WATCardOffice {
         unsigned int mId;
         WATCardOffice & mOffice;
         Printer & mPrinter;
+        Bank & mBank;
 
         void main();
 
       public:
-        Courier ( unsigned int id, WATCardOffice & office, Printer & printer );
+        Courier ( unsigned int id, WATCardOffice & office, Printer & printer, Bank & bank );
     };                 // communicates with bank
 
     Printer & mPrinter;
@@ -45,9 +51,7 @@ _Task WATCardOffice {
     bool mDone;
 
     Courier** mCouriers;
-    // std::queue<Job *> mJobs;
-    Job * mJob;
-    bool mAcceptingJob;
+    std::queue<Job *> mJobs;
 
     void main();
 
