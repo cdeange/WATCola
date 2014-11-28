@@ -10,8 +10,6 @@ _Task NameServer {
     unsigned int mNumVendingMachines;
     unsigned int mNumStudents;
     unsigned int mVMIndex;
-    unsigned int mRegisterIndex;
-    unsigned int mStudentIndex;
 
     int* mStudents;
     VendingMachine** mMachines;
