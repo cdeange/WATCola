@@ -284,3 +284,47 @@ Some of the important things to manually look out for in the output:
 • Vending machine refills are "atomic" in the sense that "r" and "R" printouts for two unique machines never overlap
 • Students cycle vending machines in a sequential manner
 • Parent randomly chooses students, and distributes 1, 2, or 3 dollars to random accounts
+
+-----
+
+Testing for deadlocks and other error conditions was done through the use of a comprehensive script.
+It would iterate through the various config files we had created and run them through many randomly-distributed
+seeds, checking each time for any output to STDERR. The testing script is outlined below:
+
+$ cat crashtest.sh
+#!/bin/bash
+
+make
+[[ $? != 0 ]] && exit 1
+
+test_seed() {
+
+    SODA=$1
+    SEED=$2
+
+    # checking for any output to STDERR
+    OUT=$(./soda $SODA $SEED 2>&1 > /dev/null)
+
+    if [[ -n "$OUT" ]]; then
+        echo "$OUT"
+        echo
+        echo "Config $SODA with seed $SEED failed!"
+
+        exit 1
+    fi
+
+}
+
+for CONFIG in $(find configs/ -name "*.config"); do
+    FILE=$(basename $CONFIG)
+    for i in $(seq 10000); do
+        SEED=$RANDOM
+        echo "$FILE - $SEED"
+        test_seed $CONFIG $SEED
+    done
+done
+
+echo
+echo "No errors!"
+
+-----
