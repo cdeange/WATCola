@@ -8,11 +8,6 @@ using namespace std;
 
 WATCardOffice::WATCardOffice( Printer & printer, Bank & bank, unsigned int numCouriers )
     : mPrinter( printer ), mBank( bank ), mNumCouriers( numCouriers ), mDone ( false ), mJob( NULL ) {
-
-  mCouriers = new Courier*[mNumCouriers];
-  for ( unsigned int i = 0; i < mNumCouriers; ++i ) {
-    mCouriers[i] = new Courier( i, *this, printer );
-  }
 }
 
 WATCardOffice::~WATCardOffice() {
@@ -51,6 +46,10 @@ WATCardOffice::Job* WATCardOffice::requestWork() {
  
 void WATCardOffice::main() {
   mPrinter.print( Printer::WATCardOffice, WATCardOffice::Starting );
+  mCouriers = new Courier*[mNumCouriers];
+  for ( unsigned int i = 0; i < mNumCouriers; ++i ) {
+    mCouriers[i] = new Courier( i, *this, mPrinter );
+  }
 
   while ( true ) {
     _Accept( ~WATCardOffice ) {
@@ -65,10 +64,11 @@ void WATCardOffice::main() {
 
 WATCardOffice::Courier::Courier ( unsigned int id, WATCardOffice & office, Printer & printer ) 
     : mId ( id ), mOffice( office ), mPrinter( printer ) {
-  mPrinter.print( Printer::Courier, id, ( char ) Courier::Starting );
 }
 
 void WATCardOffice::Courier::main() {
+
+  mPrinter.print( Printer::Courier, mId, ( char ) Courier::Starting );
 
   while ( true ) {
 

@@ -24,9 +24,9 @@ void Parent::main() {
       break;
 
     } _Else {
+      yield(mDelay);
       unsigned int money = RAND(1, 3);
       unsigned int studentId = RAND(mNumStudents - 1);
-      yield(mDelay);
       mPrinter.print( Printer::Parent, (char) Parent::Deposit, studentId, money );
       mBank.deposit( studentId, money );  
     }

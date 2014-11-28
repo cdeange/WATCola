@@ -50,7 +50,8 @@ unsigned int * VendingMachine::inventory() {
   return mInventory;
 }
 
-void VendingMachine::restocked() {}
+void VendingMachine::restocked() {
+}
 unsigned int VendingMachine::cost() {
   return mCost;
 }
@@ -64,9 +65,9 @@ void VendingMachine::main() {
 
   while( true ) {
     _Accept( inventory ) {
-      mPrinter.print( Printer::Vending, VendingMachine::StartReloading );
+      mPrinter.print( Printer::Vending, mId, (char)VendingMachine::StartReloading );
       _Accept( restocked ) {
-        mPrinter.print( Printer::Vending, VendingMachine::EndReloading );
+        mPrinter.print( Printer::Vending, mId, (char)VendingMachine::EndReloading );
       }
 
     } or _Accept( buy ) {
