@@ -19,11 +19,13 @@ Usage: ./soda [ config-file [ random-seed (> 0) ] ]
 $ ./soda soda.config_badfile 1
 Error: could not open input file "soda.config_badfile"
 
+
+
 -----
 
 
-ALGORITHM TESTING
 
+ALGORITHM TESTING
 
 Due to the pseudo-random nature of lock acquisition, programmatic input was chosen that highlights the compliance of this program with the specifications.
 
@@ -298,6 +300,11 @@ Some of the important things to manually look out for in the output:
 • Parent randomly chooses students, and distributes 1, 2, or 3 dollars to random accounts
 
 -----
+
+
+
+TEST 3 : crash test
+----------------------
 
 Testing for deadlocks and other error conditions was done through the use of a comprehensive script.
 It would iterate through the various config files we had created and run them through many randomly-distributed
