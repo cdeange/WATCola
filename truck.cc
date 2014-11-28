@@ -4,6 +4,7 @@
 
 using namespace std;
 
+/* Truck constructor */
 Truck::Truck( Printer & prt, 
               NameServer & nameServer, 
               BottlingPlant & plant,
@@ -19,10 +20,20 @@ Truck::Truck( Printer & prt,
   mPrinter.print( Printer::Truck, Truck::Starting );
 }
 
+/* Truck destructor */
 Truck::~Truck() {
   mPrinter.print( Printer::Truck, Truck::Finished );
 }
 
+/******** Truck hasCargo  *******
+  Purpose: Checks whether the truck has cargo or not
+
+  Returns: true or false
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 bool Truck::hasCargo() {
   for( int i = 0; i < VendingMachine::FlavoursCount; i++ ) {
     if( mCargo[i] > 0 ) return true;
@@ -30,6 +41,15 @@ bool Truck::hasCargo() {
   return false;
 }
 
+/******** Truck main  *******
+  Purpose: Administers the behavior of the task
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: member variables
+*/
 void Truck::main() {
 
   VendingMachine ** machineList = mNameServer.getMachineList();
@@ -58,7 +78,6 @@ void Truck::main() {
       mPrinter.print(Printer::Truck, Truck::Begin, machineId, total);
 
       // We have cargo to give out to this machine! :D
-
       unsigned int * machineInventory = machineList[machineId]->inventory();
       unsigned int unstocked = 0;
 

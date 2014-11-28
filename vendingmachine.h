@@ -39,6 +39,7 @@ _Task VendingMachine {
       Funds_Missing = 2
     };
 
+    // Print state
     enum State {
       Starting       = 'S', 
       StartReloading = 'r', 

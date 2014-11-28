@@ -5,6 +5,7 @@
 
 using namespace std;
 
+/******** Parent constructor  ********/
 Parent::Parent( Printer & prt,
                 Bank & bank,
                 unsigned int numStudents,
@@ -15,6 +16,16 @@ Parent::Parent( Printer & prt,
     mDelay(parentalDelay) {
 }
 
+
+/******** Parent main  *******
+  Purpose: Gives money to random student
+
+  Returns: n/a
+
+  Errors: n/a
+
+  Globals: member variables
+*/
 void Parent::main() {
 
   mPrinter.print( Printer::Parent, Parent::Starting );
@@ -25,10 +36,10 @@ void Parent::main() {
 
     } _Else {
       yield(mDelay);
-      unsigned int money = RAND(1, 3);
-      unsigned int studentId = RAND(mNumStudents - 1);
+      unsigned int money = RAND(1, 3);                 // Pick random amount of money
+      unsigned int studentId = RAND(mNumStudents - 1); // Pick random student
       mPrinter.print( Printer::Parent, (char) Parent::Deposit, studentId, money );
-      mBank.deposit( studentId, money );  
+      mBank.deposit( studentId, money );               // Give money to student
     }
   }
 

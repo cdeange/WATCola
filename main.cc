@@ -17,8 +17,17 @@
 
 using namespace std;          // direct access to std
 
-MPRNG RAND;
+MPRNG RAND;                   // Random number generator
 
+/******** Convert function  *******
+  Purpose: Converts a char buffer into an integer
+
+  Returns: n/a
+
+  Errors: If chars cannot be converted into an integer value
+
+  Globals: n/a
+*/
 bool convert( int &val, char *buffer ) {    // convert C string to integer
     std::stringstream ss( buffer );         // connect stream and buffer
     ss >> dec >> val;                       // convert integer from buffer
@@ -27,11 +36,30 @@ bool convert( int &val, char *buffer ) {    // convert C string to integer
   string( buffer ).find_first_not_of( " ", ss.tellg() ) == string::npos;
 } // convert
 
+
+/******** usage function  *******
+  Purpose: Prints usage errors 
+
+  Returns: n/a
+
+  Errors: n/a
+
+  Globals: n/a
+*/
 void usage( char *argv[] ) {
     cerr << "Usage: " << argv[0] << " [ config-file [ random-seed (> 0) ] ]" << endl;
     exit( EXIT_FAILURE );                   // TERMINATE
 } // usage
 
+/******** main function  *******
+  Purpose: Gets parameters, starts the tasks, and ends the tasks.
+
+  Returns: n/a
+
+  Errors: n/a
+
+  Globals: n/a
+*/
 void uMain::main() {
   ConfigParams config;
   int seed = getpid();
@@ -58,6 +86,7 @@ void uMain::main() {
   WATCardOffice office( printer, bank, config.numCouriers );
   NameServer nameServer( printer, config.numVendingMachines, config.numStudents );
 
+  // Creating the machines
   VendingMachine* machines[config.numVendingMachines];
   for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
     machines[i] = new VendingMachine( printer, 
@@ -75,16 +104,20 @@ void uMain::main() {
             config.maxStockPerFlavour, 
             config.timeBetweenShipments );
 
+  // Creating the students
   Student* students[config.numStudents];
   for ( unsigned int i = 0; i < config.numStudents; ++i ) {
     students[i] = new Student( printer, nameServer, office, i, config.maxPurchases );
   }
 
+  // Deleting the students first 
   for ( unsigned int i = 0; i < config.numStudents; ++i ) {
     delete students[i];
   }
 
   delete plant;
+
+  // Deleting the vending machines
   for ( unsigned int i = 0; i < config.numVendingMachines; ++i ) {
     delete machines[i];
   }

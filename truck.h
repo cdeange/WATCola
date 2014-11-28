@@ -9,6 +9,7 @@ _Task Truck {
   void main();
   bool hasCargo();
 
+  // Printing state
   enum State {
     Starting     = 'S', 
     Pickup       = 'P', 
@@ -20,11 +21,11 @@ _Task Truck {
 
   Printer & mPrinter;
   NameServer & mNameServer;
-  BottlingPlant & mPlant;
-  unsigned int mNumVending;
-  unsigned int mMaxStockPerFlavour;
+  BottlingPlant & mPlant;             // Plant where the truck gets shipments from
+  unsigned int mNumVending;           // Number of vending machines to restock
+  unsigned int mMaxStockPerFlavour;   // Max number of drinks to restock
 
-  unsigned int mStartVending;
+  unsigned int mStartVending;         // Machine index to start restocking in next cycle
   unsigned int mCargo[VendingMachine::FlavoursCount];
 
 public:

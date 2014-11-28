@@ -8,6 +8,7 @@
 
 _Task Student {
 
+    // Printing state
     enum State {
       Starting  = 'S', 
       Selecting = 'V', 
@@ -20,11 +21,11 @@ _Task Student {
 
     Printer & mPrinter;
     NameServer & mNameServer;
-    WATCardOffice & mOffice;
-    unsigned int mId;
+    WATCardOffice & mOffice;            // Centralized office
+    unsigned int mId;                   // Student id
 
-    unsigned int mPurchases;
-    unsigned int mFavouriteFlavour;
+    unsigned int mPurchases;            // Number of purchases
+    unsigned int mFavouriteFlavour;     // Flavour to purchase
 
     void main();
 

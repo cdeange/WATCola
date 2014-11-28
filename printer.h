@@ -6,7 +6,7 @@
 _Monitor Printer {
 
   public:
-
+    // Printing kinds
     enum Kind { 
       Parent, 
       WATCardOffice, 
@@ -54,7 +54,7 @@ _Monitor Printer {
     unsigned int mStudentStartIndex;
     unsigned int mMachineStartIndex;
     unsigned int mCourierStartIndex;
-    std::vector<PrintInfo> mPrintList;
+    std::vector<PrintInfo> mPrintList;            // Buffer to keep the list
 
     void printIfFlush( unsigned int index, PrintInfo & replaceInfo );
     void printLineAndFlushBuffer();

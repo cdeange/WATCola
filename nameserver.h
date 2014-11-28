@@ -4,18 +4,29 @@
 #include "printer.h"
 #include "vendingmachine.h"
 
+/******** Nameserver class  *******
+  Purpose: Manages names and mapping between student and machines
+*/
 _Task NameServer {
 
-    Printer & mPrinter;
-    unsigned int mNumVendingMachines;
-    unsigned int mNumStudents;
-    unsigned int mVMIndex;
+    Printer & mPrinter;                 // Printer
+    unsigned int mNumVendingMachines;   // Number of vending machines in total
+    unsigned int mNumStudents;          // Number of students in total
+    unsigned int mVMIndex;              // Used for ordering of student to machine mapping
 
-    int* mStudents;
-    VendingMachine** mMachines;
+    int* mStudents;                     // List of student ids to their machines
+    VendingMachine** mMachines;         // List of machines
 
     void main();
 
+    // States for printing
+    enum State {
+      Starting = 'S', 
+      Register = 'R', 
+      New      = 'N', 
+      Finished = 'F'
+    };
+    
   public:
     NameServer( Printer & printer, unsigned int numVendingMachines, unsigned int numStudents );
     ~NameServer();
@@ -23,12 +34,7 @@ _Task NameServer {
     VendingMachine *getMachine( unsigned int id );
     VendingMachine **getMachineList();
 
-    enum State {
-      Starting = 'S', 
-      Register = 'R', 
-      New      = 'N', 
-      Finished = 'F'
-    };
+
 };
 
 #endif

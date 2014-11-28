@@ -20,6 +20,7 @@ Printer::PrintInfo::PrintInfo( Kind kind,
     : mKind( kind ), mState( state ), mData( data ), mHasData( true ) {
 }
 
+// Printing data constructors
 Printer::PrintData::PrintData()
     : mNumData( 0 ) {
 }
@@ -32,10 +33,13 @@ Printer::PrintData::PrintData( int first, int second )
     : mNumData( 2 ), mFirst( first ), mSecond( second ) {
 }
 
+
+// Printer constructor
 Printer::Printer( unsigned int numStudents,
                   unsigned int numVendingMachines,
                   unsigned int numCouriers ) {
 
+  // Printing off the first few objects
   cout << "Parent\t";
   cout << "WATOff\t";
   cout << "Names\t";
@@ -82,9 +86,19 @@ Printer::Printer( unsigned int numStudents,
 }
 
 Printer::~Printer() {
+  // End stars
   cout << "***********************" << endl;
 }
 
+/******** Print print  *******
+  Purpose: prints using kind, state. 
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::print( Kind kind, char state ) {
   PrintData newData;
   PrintInfo newInfo( kind, state, newData );
@@ -92,6 +106,15 @@ void Printer::print( Kind kind, char state ) {
   printIfFlush( getPrintIndex( kind ), newInfo );
 }
 
+/******** Print print  *******
+  Purpose: prints using kind, state, value
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::print( Kind kind, char state, int value1 ) {
   PrintData newData( value1 );
   PrintInfo newInfo( kind, state, newData );
@@ -99,6 +122,15 @@ void Printer::print( Kind kind, char state, int value1 ) {
   printIfFlush( getPrintIndex( kind ), newInfo );
 }
 
+/******** Print print  *******
+  Purpose: prints using kind, state, value, value 
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::print( Kind kind, char state, int value1, int value2 ) {
   PrintData newData( value1, value2 );
   PrintInfo newInfo( kind, state, newData );
@@ -106,6 +138,15 @@ void Printer::print( Kind kind, char state, int value1, int value2 ) {
   printIfFlush( getPrintIndex( kind ), newInfo );
 }
 
+/******** Print print  *******
+  Purpose: prints using kind, state, id
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::print( Kind kind, unsigned int lid, char state ) {
   PrintData newData;
   PrintInfo newInfo( kind, state, newData );
@@ -113,6 +154,15 @@ void Printer::print( Kind kind, unsigned int lid, char state ) {
   printIfFlush( getPrintIndex( kind, lid ), newInfo );  
 }
 
+/******** Print print  *******
+  Purpose: prints using kind, state, id, value
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
   PrintData newData( value1 );
   PrintInfo newInfo( kind, state, newData );
@@ -120,6 +170,15 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
   printIfFlush( getPrintIndex( kind, lid ), newInfo );
 }
 
+/******** Print print  *******
+  Purpose: prints using kind, state id value, value
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
   PrintData newData( value1, value2 );
   PrintInfo newInfo( kind, state, newData );
@@ -127,6 +186,15 @@ void Printer::print( Kind kind, unsigned int lid, char state, int value1, int va
   printIfFlush( getPrintIndex( kind, lid ), newInfo );
 }
 
+/******** Printer getPrintIndex  *******
+  Purpose: Calculates the index needed for printing buffer
+
+  Returns: index of print given id and kind
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {
 
   switch( kind ) {
@@ -153,6 +221,15 @@ unsigned int Printer::getPrintIndex( Kind kind, unsigned int id ) {
   return 0;
 }
 
+/******** Print printIfFlush  *******
+  Purpose: Prints line if there are items already in the buffer
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::printIfFlush( unsigned int index, PrintInfo & replaceInfo ) {
 
   if ( replaceInfo.mState == 'F' ) {
@@ -168,6 +245,15 @@ void Printer::printIfFlush( unsigned int index, PrintInfo & replaceInfo ) {
   }
 }
 
+/******** Print printLineAndFlushBuffer  *******
+  Purpose: Prints the current line and flushes the buffer
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::printLineAndFlushBuffer() {
 
   // That thing where you don't print anything else after the last element
@@ -205,6 +291,16 @@ void Printer::printLineAndFlushBuffer() {
   cout << endl;
 }
 
+
+/******** Print printFinishLine  *******
+  Purpose: Prints the finish line and flushes the buffer
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void Printer::printFinishLine( unsigned int index ) {
 
   printLineAndFlushBuffer();

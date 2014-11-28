@@ -3,15 +3,18 @@
 
 #include <uFuture.h>
 
-class WATCard {
-    WATCard( const WATCard & );            // prevent copying
-    WATCard &operator=( const WATCard & );
+/******** WATCard class  *******/
 
-    unsigned int mBalance;
+class WATCard {
+    WATCard( const WATCard & );             // Prevents copying
+    WATCard &operator=( const WATCard & );  // Prevents copying
+
+    unsigned int mBalance;                  // Balance
   public:
-    WATCard();
-    typedef Future_ISM<WATCard *> FWATCard; // future watcard pointer
-    void deposit( unsigned int amount );
+    WATCard();                              // Constructor
+                                            // Default destructor
+    typedef Future_ISM<WATCard *> FWATCard; // Future watcard pointer
+    void deposit( unsigned int amount );   
     void withdraw( unsigned int amount );
     unsigned int getBalance();
 };

@@ -8,6 +8,7 @@
 
 using namespace std;
 
+/******** Student constructor  ********/
 Student::Student( Printer & printer, 
                   NameServer & nameServer, 
                   WATCardOffice & office, 
@@ -19,6 +20,15 @@ Student::Student( Printer & printer,
   mFavouriteFlavour = RAND( VendingMachine::FlavoursCount - 1 );
 }
 
+/******** Student main  *******
+  Purpose: adminsters student and their purchases 
+
+  Returns: n/a
+
+  Errors: Lost watcard, insufficient funds, or out of stock 
+
+  Globals: n/a
+*/
 void Student::main() {
 
   mPrinter.print( Printer::Student, 
@@ -27,12 +37,13 @@ void Student::main() {
                   mFavouriteFlavour,
                   mPurchases );
 
+  // Creates an initial Watcard
   WATCard::FWATCard watcard = mOffice.create( mId, STARTING_BALANCE );
 
   WATCard* card = NULL;
 
   for ( unsigned int i = 0; i < mPurchases; ++i ) {
-
+    // Gets the first machine to get drinks from
     VendingMachine *machine = mNameServer.getMachine( mId );
     mPrinter.print( Printer::Student,
                     mId,
@@ -45,11 +56,13 @@ void Student::main() {
 
       while ( true ) {
         try {
+          // Tries to get their card 
           card = watcard();
           // Card not lost, attempt to buy beverage
           break;
 
         } catch ( WATCardOffice::Lost &ex ) {
+          // Courier loses the card
           mPrinter.print( Printer::Student,
                           mId,
                           ( char ) Student::Lost );
@@ -59,6 +72,7 @@ void Student::main() {
       }
 
       try {
+        // Purchases the drink from the vending machine
         machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *card );
         mPrinter.print( Printer::Student,
                         mId,
@@ -68,9 +82,11 @@ void Student::main() {
         break;
 
       } catch ( VendingMachine::Funds &ex ) {
+        // Not enough funds on Watcard, must have more!
         watcard = mOffice.transfer( mId, STARTING_BALANCE + machine->cost(), card );
 
       } catch ( VendingMachine::Stock &ex ) {
+        // Not enough in stock, move onto the next machine
         machine = mNameServer.getMachine( mId );
         mPrinter.print( Printer::Student,
                         mId,

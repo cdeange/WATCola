@@ -6,6 +6,7 @@
 
 using namespace std;
 
+/******** VendingMachine constructor  ********/
 VendingMachine::VendingMachine( 
     Printer &prt, 
     NameServer &nameServer, 
@@ -26,19 +27,32 @@ VendingMachine::VendingMachine(
 
 }
 
+/******** VendingMachine destructor  ********/
 VendingMachine::~VendingMachine() {
 }
 
+
+/******** VendingMachine buy  *******
+  Purpose: Called by students to purchase a flavor
+
+  Returns: n/a
+
+  Errors: Out of stuck, not enough funds
+
+  Globals: n/a
+*/
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
 
   mPurchase = make_pair( flavour, &card );
   mLock.wait();
 
   if ( mPurchaseResult == VendingMachine::Funds_Missing ) {
+    // Not enough funds
     uRendezvousAcceptor();
     _Throw Funds();
 
   } else if ( mPurchaseResult == VendingMachine::Stock_Missing ) {
+    // Stock missing
     uRendezvousAcceptor();
     _Throw Stock();
   }
@@ -50,8 +64,7 @@ unsigned int * VendingMachine::inventory() {
   return mInventory;
 }
 
-void VendingMachine::restocked() {
-}
+void VendingMachine::restocked() {}
 
 unsigned int VendingMachine::cost() {
   return mCost;
@@ -61,18 +74,27 @@ unsigned int VendingMachine::getId() {
   return mId;
 }
 
+/******** VendingMachine main  *******
+  Purpose: Administers the vending machine methods
+
+  Returns: n/a
+
+  Errors: n/a 
+
+  Globals: n/a
+*/
 void VendingMachine::main() {
   mPrinter.print( Printer::Vending, mId, ( char ) VendingMachine::Starting, mCost );
 
   while( true ) {
     _Accept( inventory ) {
       mPrinter.print( Printer::Vending, mId, (char)VendingMachine::StartReloading );
+      // Waits for restocked before anything else can do things
       _Accept( restocked ) {
         mPrinter.print( Printer::Vending, mId, (char)VendingMachine::EndReloading );
       }
 
     } or _Accept( buy ) {
-
       Flavours flavour = mPurchase.first;
       WATCard * card = mPurchase.second;
 

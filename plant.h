@@ -6,6 +6,9 @@
 
 _Task Truck;
 
+/******** BottlingPlant getShipment  *******
+  Purpose: To create cargos of drinks
+*/
 _Task BottlingPlant {
   public:
     _Event Shutdown {};                    // shutdown plant
@@ -20,6 +23,7 @@ _Task BottlingPlant {
     void createProductionRun();
     void main();
     
+    // Printing states
     enum State {
       Starting   = 'S', 
       Generating = 'G', 
@@ -27,16 +31,16 @@ _Task BottlingPlant {
       Finished   = 'F'
     };
     
-    Printer & mPrinter;
-    NameServer & mNameServer;
-    unsigned int mNumVendingMachines;
-    unsigned int mMaxShippedPerFlavour;
-    unsigned int mMaxStockPerFlavour;
-    unsigned int mTimeBetweenShipments;
-    bool mShutdown;
-    int mStock[VendingMachine::FlavoursCount];
+    Printer & mPrinter;                         // Printer
+    NameServer & mNameServer;                   // Name Server
+    unsigned int mNumVendingMachines;           // Total number of vending machines
+    unsigned int mMaxShippedPerFlavour;         // Maximum number of shipped flavours per round
+    unsigned int mMaxStockPerFlavour;           // Max stock per flavour at the vending machines
+    unsigned int mTimeBetweenShipments;         // Time to yield for simulation between shipments
+    bool mShutdown;                             // Notify 
+    int mStock[VendingMachine::FlavoursCount];  // Flavours stock
 
-    Truck * mTruck;
+    Truck * mTruck;                             // Plant's truck
 
 };
 
