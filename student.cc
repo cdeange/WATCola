@@ -4,6 +4,7 @@
 #include "vendingmachine.h"
 #include "MPRNG.h"
 #include "WATCardOffice.h"
+#include <iostream>
 
 using namespace std;
 
@@ -48,7 +49,7 @@ void Student::main() {
                         mId,
                         ( char ) Student::Buying,
                         card->getBalance() );
-        // Successful purchase        
+        // Successful purchase  
         break;
 
       } catch ( VendingMachine::Funds &ex ) {
@@ -72,6 +73,4 @@ void Student::main() {
   }
 
   mPrinter.print( Printer::Student, mId, ( char ) Student::Finished );
-
-  delete watcard;
 }

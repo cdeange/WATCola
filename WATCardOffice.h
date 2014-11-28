@@ -1,24 +1,49 @@
 #ifndef WATCARD_OFFICE_H_
 #define WATCARD_OFFICE_H_
 
-#include <queue>
+#include <queue> 
+#include <vector>
 
 #include "bank.h"
 #include "printer.h"
 #include "WATCard.h"
 
+using namespace std;
+
 #define LOSE_CARD_CHANCE 6
 
 _Task WATCardOffice {
 
-    struct Job {
+    enum WorkType {
+      TRANSFER,
+      CREATE,
+      FINISH
+    };
+
+    struct Args {
+      Args( WorkType type,
+            unsigned int sid,
+            unsigned int amount,
+            WATCard * card,
+            Bank * bank) {
+        mType = type;
+        mSid = sid;
+        mAmount = amount;
+        mCard = card;
+        mBank = bank;
+      }
+
+      WorkType mType;
       unsigned int mSid;
       unsigned int mAmount;
-      WATCard * mWatcard;
-      Bank & mBank;
-      WATCard::FWATCard mResult;
-        Job( int sid, int amount, WATCard * watcard, Bank & bank )
-            : mSid( sid ), mAmount( amount ), mWatcard( watcard ), mBank( bank ) {}
+      WATCard * mCard;
+      Bank * mBank;
+    };
+
+    struct Job {
+      Args mArgs;                 // marshalled arguments and return future
+      WATCard::FWATCard mResult;  // return future
+      Job( Args args ) : mArgs( args ) {} 
     };
 
     _Task Courier {
@@ -32,20 +57,24 @@ _Task WATCardOffice {
         unsigned int mId;
         WATCardOffice & mOffice;
         Printer & mPrinter;
+        vector<WATCard* > mDeleteCards;
 
         void main();
 
       public:
         Courier ( unsigned int id, WATCardOffice & office, Printer & printer );
+        ~Courier();
     };                 // communicates with bank
 
     Printer & mPrinter;
     Bank & mBank;
     unsigned int mNumCouriers;
-    bool mDone;
+    vector<Courier*> mCouriers;
+    // bool mDone;
 
-    Courier** mCouriers;
+    // Courier** mCouriers;
     std::queue<Job *> mJobs;
+    std::vector<Job *> mDeleteJobs;
 
     void main();
 
