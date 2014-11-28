@@ -3,7 +3,9 @@
 #include "MPRNG.h"
 #include "WATCard.h"
 #include "WATCardOffice.h"
+
 #include <iostream>
+#include <memory>
 
 using namespace std;
 
@@ -21,7 +23,6 @@ WATCardOffice::~WATCardOffice() {
     Args arg( WATCardOffice::FINISH, 0, 0, NULL );
     Job * job = new Job( arg );
     mJobs.push( job );
-    mDeleteJobs.push_back( job );
   }
 
   while ( !mJobs.empty() ) {
@@ -33,19 +34,12 @@ WATCardOffice::~WATCardOffice() {
     mCouriers[i] = NULL;
   }
 
-  for( unsigned int i = 0; i < mDeleteJobs.size(); i++ ) {
-    if( mDeleteJobs[i] != NULL ) 
-      delete mDeleteJobs[i];
-    mDeleteJobs[i] = NULL;
-  }
-
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
-  Args args( WATCardOffice::CREATE, sid, amount, NULL );
+  Args args( WATCardOffice::CREATE, sid, amount, new WATCard() );
   Job * job = new Job( args );
   mJobs.push( job );
-  mDeleteJobs.push_back(job);
   mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::CreateWork, ( int ) sid, ( int ) amount );
   return job->mResult;
 }
@@ -54,7 +48,6 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
   Args args( WATCardOffice::TRANSFER, sid, amount, card );
   Job * job = new Job( args );
   mJobs.push( job );
-  mDeleteJobs.push_back(job);
   mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::TransferWork, ( int ) sid, ( int ) amount );
   return job->mResult;
 }
@@ -84,42 +77,30 @@ WATCardOffice::Courier::Courier ( unsigned int id, WATCardOffice & office, Print
     : mId ( id ), mOffice( office ), mPrinter( printer ), mBank( bank ) {
 }
 
-WATCardOffice::Courier::~Courier() {
-  for( unsigned int i = 0; i < mDeleteCards.size(); i++ ) {
-    if( mDeleteCards[i] != NULL ) {
-      delete mDeleteCards[i];
-    }
-    mDeleteCards[i] = NULL;
-  }
-}
 void WATCardOffice::Courier::main() {
 
   mPrinter.print( Printer::Courier, mId, ( char ) Courier::Starting );
 
   while ( true ) {
-    Job * job = mOffice.requestWork();
+    unique_ptr<Job> job( mOffice.requestWork() );
 
     Args args = job->mArgs;
-    if( args.mType == WATCardOffice::FINISH ) break;
-
-    if( args.mType == WATCardOffice::CREATE ) {
-      args.mCard = new WATCard();
-      mDeleteCards.push_back( args.mCard );
+    if ( args.mType == WATCardOffice::FINISH ) {
+      delete args.mCard;
+      break;
     }
 
     mPrinter.print( Printer::Courier, mId, ( char ) Courier::StartTransfer, args.mSid, args.mAmount );
     mBank.withdraw( args.mSid, args.mAmount );
     args.mCard->deposit( args.mAmount );
     
-    if( RAND(1, 6) == 1 ) {
-      // delete args.mCard;
+    if( RAND( 1, LOSE_CARD_CHANCE ) == 1 ) {
+      delete args.mCard;
       job->mResult.exception( new Lost );
     } else {
       job->mResult.delivery( args.mCard );
     }
     mPrinter.print( Printer::Courier, mId, ( char ) Courier::EndTransfer, args.mSid, args.mAmount );
-
-    // delete job;
 
   }
 

@@ -1,6 +1,8 @@
 #include "vendingmachine.h"
 #include "nameserver.h"
+
 #include <iostream>
+#include <utility>
 
 using namespace std;
 
@@ -29,19 +31,17 @@ VendingMachine::~VendingMachine() {
 
 void VendingMachine::buy( Flavours flavour, WATCard &card ) {
 
-  unsigned int balance = card.getBalance();
+  mPurchase = make_pair( flavour, &card );
+  mLock.wait();
 
-  if ( balance < mCost ) {
+  if ( mPurchaseResult == VendingMachine::Funds_Missing ) {
     uRendezvousAcceptor();
     _Throw Funds();
 
-  } else if ( mInventory[flavour] <= 0 ) {
+  } else if ( mPurchaseResult == VendingMachine::Stock_Missing ) {
     uRendezvousAcceptor();
     _Throw Stock();
   }
-
-  card.withdraw( mCost );
-  mInventory[flavour]--;
 
   mPrinter.print( Printer::Vending, VendingMachine::Buying, flavour, mInventory[flavour] );
 }
@@ -52,6 +52,7 @@ unsigned int * VendingMachine::inventory() {
 
 void VendingMachine::restocked() {
 }
+
 unsigned int VendingMachine::cost() {
   return mCost;
 }
@@ -71,6 +72,23 @@ void VendingMachine::main() {
       }
 
     } or _Accept( buy ) {
+
+      Flavours flavour = mPurchase.first;
+      WATCard * card = mPurchase.second;
+
+      if ( card->getBalance() < mCost ) {
+        mPurchaseResult = VendingMachine::Funds_Missing;
+
+      } else if ( mInventory[flavour] <= 0 ) {
+        mPurchaseResult = VendingMachine::Stock_Missing;
+
+      } else {
+        mPurchaseResult = Success;
+        card->withdraw( mCost );
+        mInventory[flavour]--;
+      }
+
+      mLock.signalBlock();
 
     } or _Accept( ~VendingMachine ) {
       return;

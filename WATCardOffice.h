@@ -1,14 +1,13 @@
 #ifndef WATCARD_OFFICE_H_
 #define WATCARD_OFFICE_H_
 
-#include <queue> 
+#include <queue>
+#include <memory>
 #include <vector>
 
 #include "bank.h"
 #include "printer.h"
 #include "WATCard.h"
-
-using namespace std;
 
 #define LOSE_CARD_CHANCE 6
 
@@ -21,14 +20,8 @@ _Task WATCardOffice {
     };
 
     struct Args {
-      Args( WorkType type,
-            unsigned int sid,
-            unsigned int amount,
-            WATCard * card ) {
-        mType = type;
-        mSid = sid;
-        mAmount = amount;
-        mCard = card;
+      Args( WorkType type, unsigned int sid, unsigned int amount, WATCard * card )
+          : mType( type ), mSid( sid ), mAmount( amount ), mCard( card ) {
       }
 
       WorkType mType;
@@ -54,25 +47,19 @@ _Task WATCardOffice {
         unsigned int mId;
         WATCardOffice & mOffice;
         Printer & mPrinter;
-        vector<WATCard* > mDeleteCards;
         Bank & mBank;
 
         void main();
 
       public:
         Courier ( unsigned int id, WATCardOffice & office, Printer & printer, Bank & bank );
-        ~Courier();
-    };                 // communicates with bank
+    };
 
     Printer & mPrinter;
     Bank & mBank;
     unsigned int mNumCouriers;
-    vector<Courier*> mCouriers;
-    // bool mDone;
-
-    // Courier** mCouriers;
+    std::vector<Courier*> mCouriers;
     std::queue<Job *> mJobs;
-    std::vector<Job *> mDeleteJobs;
 
     void main();
 
@@ -86,7 +73,7 @@ _Task WATCardOffice {
 
   public:
 
-    _Event Lost {};                        // lost WATCard
+    _Event Lost {};
     WATCardOffice( Printer & printer, Bank & bank, unsigned int numCouriers );
     ~WATCardOffice();
     WATCard::FWATCard create( unsigned int sid, unsigned int amount );

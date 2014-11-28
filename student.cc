@@ -29,6 +29,8 @@ void Student::main() {
 
   WATCard::FWATCard watcard = mOffice.create( mId, STARTING_BALANCE );
 
+  WATCard* card = NULL;
+
   for ( unsigned int i = 0; i < mPurchases; ++i ) {
 
     VendingMachine *machine = mNameServer.getMachine( mId );
@@ -38,8 +40,6 @@ void Student::main() {
                     machine->getId() );
 
     while ( true ) {
-
-      WATCard* card = NULL;
 
       yield( RAND( 1, 10 ) );
 
@@ -53,6 +53,7 @@ void Student::main() {
           mPrinter.print( Printer::Student,
                           mId,
                           ( char ) Student::Lost );
+          watcard.cancel();
           watcard = mOffice.create( mId, STARTING_BALANCE );
         } 
       }
@@ -79,6 +80,8 @@ void Student::main() {
       }
     }
   }
+
+  delete card;
 
   mPrinter.print( Printer::Student, mId, ( char ) Student::Finished );
 }
