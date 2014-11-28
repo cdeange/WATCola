@@ -3,11 +3,12 @@
 #include "MPRNG.h"
 #include "WATCard.h"
 #include "WATCardOffice.h"
+#include <iostream>
 
 using namespace std;
 
 WATCardOffice::WATCardOffice( Printer & printer, Bank & bank, unsigned int numCouriers )
-    : mPrinter( printer ), mBank( bank ), mNumCouriers( numCouriers ), mDone ( false ), mJob( NULL ) {
+    : mPrinter( printer ), mBank( bank ), mNumCouriers( numCouriers ), mDone ( false ) {
 }
 
 WATCardOffice::~WATCardOffice() {
@@ -23,27 +24,29 @@ WATCardOffice::~WATCardOffice() {
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
-  mJob = new Job( sid, amount, NULL, mBank );
+  Job * job = new Job( sid, amount, NULL, mBank );
+  mJobs.push( job );
   mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::CreateWork, ( int ) sid, ( int ) amount );
-  return mJob->mResult;
+  return job->mResult;
 }
 
 WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard *card ) {
-  mJob = new Job( sid, amount, card, mBank );
+  Job * job = new Job( sid, amount, card, mBank );
+  mJobs.push( job );
   mPrinter.print( Printer::WATCardOffice, ( char ) WATCardOffice::TransferWork, ( int ) sid, ( int ) amount );
-  return mJob->mResult;
+  return job->mResult;
 }
 
 WATCardOffice::Job* WATCardOffice::requestWork() {
 
   if ( mDone ) return NULL;
-  Job* job = mJob;
-  mJob = NULL;
+  Job* job = mJobs.front();
+  mJobs.pop();
 
   mPrinter.print( Printer::WATCardOffice, WATCardOffice::RequestWork );
   return job;
 }
- 
+
 void WATCardOffice::main() {
   mPrinter.print( Printer::WATCardOffice, WATCardOffice::Starting );
   mCouriers = new Courier*[mNumCouriers];
@@ -54,8 +57,8 @@ void WATCardOffice::main() {
   while ( true ) {
     _Accept( ~WATCardOffice ) {
       break;
-    } or _When ( mJob != NULL ) _Accept( requestWork ) {
-    } or _When ( mJob == NULL ) _Accept( create, transfer ) {
+    } or _When ( !mJobs.empty() ) _Accept( requestWork ) {
+    } or _Accept( create, transfer ) {
     }
   }
 
@@ -82,8 +85,8 @@ void WATCardOffice::Courier::main() {
     job->mWatcard->deposit( job->mAmount );
 
     if ( RAND( LOSE_CARD_CHANCE - 1 ) == 0 ) {
-      job->mResult.exception( new Lost );
       delete job->mWatcard;
+      job->mResult.exception( new Lost );
 
     } else {
       job->mResult.delivery( job->mWatcard );

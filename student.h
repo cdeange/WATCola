@@ -25,7 +25,6 @@ _Task Student {
 
     unsigned int mPurchases;
     unsigned int mFavouriteFlavour;
-    WATCard::FWATCard mWatcard;
 
     void main();
 

@@ -6,11 +6,13 @@
 _Monitor Bank {
   public:
     Bank( unsigned int numStudents );
+    ~Bank();
     void deposit( unsigned int id, unsigned int amount );
     void withdraw( unsigned int id, unsigned int amount );
 
   private:
-    std::vector<unsigned int> mBalances;
+    unsigned int* mBalances;
+    uCondition* mLocks;
 };
 
 #endif

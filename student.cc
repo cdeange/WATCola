@@ -26,7 +26,7 @@ void Student::main() {
                   mFavouriteFlavour,
                   mPurchases );
 
-  mWatcard = mOffice.create( mId, STARTING_BALANCE );
+  WATCard::FWATCard watcard = mOffice.create( mId, STARTING_BALANCE );
 
   for ( unsigned int i = 0; i < mPurchases; ++i ) {
     yield( RAND( 1, 10 ) );
@@ -38,8 +38,11 @@ void Student::main() {
                     machine->getId() );
 
     while ( true ) {
+
+      WATCard* card = NULL;
+
       try {
-        WATCard* card = mWatcard();
+        card = watcard();
         machine->buy( ( VendingMachine::Flavours ) mFavouriteFlavour, *card );
         mPrinter.print( Printer::Student,
                         mId,
@@ -49,7 +52,7 @@ void Student::main() {
         break;
 
       } catch ( VendingMachine::Funds &ex ) {
-        mWatcard = mOffice.transfer( mId, STARTING_BALANCE + machine->cost(), mWatcard() );
+        watcard = mOffice.transfer( mId, STARTING_BALANCE + machine->cost(), card );
 
       } catch ( VendingMachine::Stock &ex ) {
         machine = mNameServer.getMachine( mId );
@@ -63,12 +66,12 @@ void Student::main() {
                         mId,
                         ( char ) Student::Lost );
 
-        mWatcard = mOffice.create( mId, STARTING_BALANCE );
+        watcard = mOffice.create( mId, STARTING_BALANCE );
       }
     }
   }
 
   mPrinter.print( Printer::Student, mId, ( char ) Student::Finished );
 
-  delete mWatcard;
+  delete watcard;
 }

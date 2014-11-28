@@ -22,21 +22,21 @@ _Task WATCardOffice {
     };
 
     _Task Courier {
-      enum State {
-        Starting      = 'S', 
-        StartTransfer = 't', 
-        EndTransfer   = 'T', 
-        Finished      = 'F'
-      };
+        enum State {
+          Starting      = 'S', 
+          StartTransfer = 't', 
+          EndTransfer   = 'T', 
+          Finished      = 'F'
+        };
 
-      unsigned int mId;
-      WATCardOffice & mOffice;
-      Printer & mPrinter;
+        unsigned int mId;
+        WATCardOffice & mOffice;
+        Printer & mPrinter;
 
-      void main();
+        void main();
 
       public:
-      Courier ( unsigned int id, WATCardOffice & office, Printer & printer );
+        Courier ( unsigned int id, WATCardOffice & office, Printer & printer );
     };                 // communicates with bank
 
     Printer & mPrinter;
@@ -45,7 +45,7 @@ _Task WATCardOffice {
     bool mDone;
 
     Courier** mCouriers;
-    Job * mJob;
+    std::queue<Job *> mJobs;
 
     void main();
 
