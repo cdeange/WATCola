@@ -1,4 +1,5 @@
------
+USER INTERFACE TESTING
+There is no user interface to be tested. The only user input will the running the program. So the testing focuses soley on the algorithmic part. This section will focus on only the user inputs that have failed.
 
 We first tested all the error cases that would not allow the program to start:
 
@@ -20,6 +21,14 @@ Error: could not open input file "soda.config_badfile"
 
 -----
 
+
+ALGORITHM TESTING
+
+
+Due to the pseudo-random nature of lock acquisition, programmatic input was chosen that highlights the compliance of this program with the specifications.
+
+TEST 1: basic parameters
+------------------------
 We started testing with the parameters given to us in the assignment specification:
 
 INPUT:
@@ -149,6 +158,9 @@ F       ...     ...     ...     ...     ...     ...     ...     ...     ...     
 ***********************
 
 -----
+
+TEST 2: Edge and other cases
+------------------------------
 
 Other important configuration files we used are listed below.
 Keep in mind that output from said configuration may have been too lengthy for inclusion in this test document.
