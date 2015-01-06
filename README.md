@@ -1,4 +1,4 @@
 WATCola
 =======
 
-CS343 Assignment 6
+Concurrency assignment, written in µC++
